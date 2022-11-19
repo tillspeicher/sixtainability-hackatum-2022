@@ -11,7 +11,7 @@ export function Dashboard({ prop = "Dashboard" }: DashboardProps) {
 return (
     <div className="w-full h-screen bg-black">
         <div className="w-full h-12 bg-zinc-800 drop-shadow-md mb-1 justify-center content-center">
-            <p className="text-white text-center text-xl">
+            <p className="text-orange text-center text-xl">
                 Such EVs, much wow
             </p>
         </div>
