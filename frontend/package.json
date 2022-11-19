@@ -25,7 +25,7 @@
     "format:fix": "prettier src --write",
     "typecheck": "tsc",
     "generate": "plop",
-    "prepare": "cd .. && husky install frontend/.husky"
+    "prepare": "cd ../ && husky install frontend/.husky"
   },
   "husky": {
     "hooks": {
