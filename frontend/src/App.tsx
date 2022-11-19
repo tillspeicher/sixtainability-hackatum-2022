@@ -1,12 +1,14 @@
-import { ThemeProvider } from "@mui/material/styles"
+import { ThemeProvider, StyledEngineProvider } from "@mui/material/styles"
 
 import { Home } from "~/pages/Home"
-import { theme } from "~/styles"
+import { theme } from "~/styles/theme"
 
 export function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <Home />
-    </ThemeProvider>
+    <StyledEngineProvider injectFirst>
+        <ThemeProvider theme={theme}>
+            <Home />
+        </ThemeProvider>
+    </StyledEngineProvider>
   )
 }

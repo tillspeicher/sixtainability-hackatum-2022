@@ -13,19 +13,12 @@ import type { DashboardProps } from "./types"
 
 export function Dashboard({ prop = "Dashboard" }: DashboardProps) {
 return (
-    <Box sx={{
-        flexGrow: 1,
-    }}>
-    <AppBar position="static" color={"secondary"} >
-        <Toolbar variant="dense">
-            <IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 0 }}>
-            {/* <MenuIcon /> */}
-            </IconButton>
-            <Typography variant="h6" color="inherit" component="div">
+    <div className="w-full">
+        <div className="bg-white w-full h-14 drop-shadow-md">
+            <h5>
                 Such EVs, much wow
-            </Typography>
-        </Toolbar>
-    </AppBar>
+            </h5>
+        </div>
     <Grid container spacing={0}>
         <Grid xs={3}>
             <DashboardBox title={"Info"}>
@@ -45,7 +38,7 @@ return (
             </DashboardBox>
         </Grid>
     </Grid>
-  </Box>
+    </div>
 )}
 
 type SliderControlProps = {
