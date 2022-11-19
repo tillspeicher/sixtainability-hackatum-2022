@@ -1,4 +1,4 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom"
+import { RouterProvider, createBrowserRouter } from "react-router-dom/dist"
 
 import { ErrorPage } from "~/components/ErrorPage"
 import { Base } from "~/layouts/Base"

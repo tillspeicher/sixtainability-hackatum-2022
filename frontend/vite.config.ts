@@ -2,9 +2,9 @@
 
 import { resolve as pathResolve } from "path"
 
-import react from "@vitejs/plugin-react"
+import react from "@vitejs/plugin-react/dist"
 import { defineConfig } from "vite"
-import svgr from "vite-plugin-svgr"
+import svgr from "vite-plugin-svgr/dist"
 
 const resolve = (path: string) => pathResolve(__dirname, path)
 

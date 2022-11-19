@@ -1,0 +1,1 @@
+let MAPBOX_ACCESS_TOKEN = "pk.eyJ1IjoibnQtZmEiLCJhIjoiY2t0dHBvdmtvMGFwbjJwcXRndmY3cjdiaiJ9.f7EI4dg15enSn1Q20e5ipA"

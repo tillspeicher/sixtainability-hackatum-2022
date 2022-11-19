@@ -1,0 +1,1 @@
+HERE_API_KEY = "6KudCsWvXUhjKH6yhIX-eBEyeZuEkHQyOu6jg2NAmlY"
