@@ -1,6 +1,11 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from backend.src.utils.utilities import *
+from glob import glob
+import os
+# print(glob(os.getcwd() +"/*/", recursive = True))
+#
+# print(os.getcwd())
+from utils.utilities import *
 
 
 app = FastAPI(title="Sixtainability API")
