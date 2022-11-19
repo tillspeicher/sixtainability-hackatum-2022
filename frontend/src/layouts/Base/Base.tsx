@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom/dist"
+import { Outlet } from "react-router-dom"
 
 import { Navigation } from "~/components/Navigation"
 import { NAV_LINKS } from "~/constants"

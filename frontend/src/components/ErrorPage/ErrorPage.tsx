@@ -1,4 +1,4 @@
-import { useRouteError } from "react-router-dom/dist"
+import { useRouteError } from "react-router-dom"
 
 // import type { ErrorPageProps } from "./types"
 

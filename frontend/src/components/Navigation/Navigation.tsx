@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom/dist"
+import { Link } from "react-router-dom"
 
 import type { NavigationProps } from "./types"
 
