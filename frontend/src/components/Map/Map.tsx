@@ -8,7 +8,12 @@ import type { MapProps } from "./types"
 mapboxgl.accessToken =
   "pk.eyJ1IjoibHVnaXRhbiIsImEiOiJjbDhqODRhMXQwdTlnM3ZvNTdtajh1enNuIn0.ThQMOek5mPSAAbPuJJqe8A"
 
-export function MapBox({ prop = "Map" }: MapProps) {
+export function MapBox({
+    prop = "Map",
+    users,
+    chargers,
+    stations,
+}: MapProps) {
   const mapContainer = useRef(null)
   const map = useRef(null)
   const [lng, setLng] = useState(11.576124)
@@ -25,6 +30,7 @@ export function MapBox({ prop = "Map" }: MapProps) {
     })
 
     map.current.on("load", () => {
+        if (map.current == null) return
       // Add a source for the state polygons.
       for (const x in polygon as any) {
         // console.log(polygon[x])
@@ -71,6 +77,16 @@ export function MapBox({ prop = "Map" }: MapProps) {
       }
     })
   })
+
+    useEffect(() => {
+        if (map.current == null) return
+
+        users.forEach((user) => {
+            new mapboxgl.Marker()
+                .setLngLat([user.lng, user.lat])
+                .addTo(map.current)
+        })
+    }, [users])
 
   return <div ref={mapContainer} id="map" className="map-container" />
 }
