@@ -1,4 +1,4 @@
-import mapboxgl from "mapbox-gl"
+import mapboxgl, { Map } from "mapbox-gl"
 import { useEffect, useRef, useState } from "react"
 
 import polygon from "~/constants/polygons.json"
@@ -8,7 +8,7 @@ import type { MapProps } from "./types"
 mapboxgl.accessToken =
   "pk.eyJ1IjoibHVnaXRhbiIsImEiOiJjbDhqODRhMXQwdTlnM3ZvNTdtajh1enNuIn0.ThQMOek5mPSAAbPuJJqe8A"
 
-export function Map({ prop = "Map" }: MapProps) {
+export function MapBox({ prop = "Map" }: MapProps) {
   const mapContainer = useRef(null)
   const map = useRef(null)
   const [lng, setLng] = useState(11.576124)
