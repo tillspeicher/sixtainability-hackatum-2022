@@ -1,6 +1,6 @@
 import { ReactNode } from "react"
 
 export type DashboardBoxProps = {
-  title: string
+  title?: string
   children: ReactNode
 }
