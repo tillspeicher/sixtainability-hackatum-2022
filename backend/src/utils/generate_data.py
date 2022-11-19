@@ -6,10 +6,10 @@ from backend.config import API_KEY
 
 
 def get_google_latlng_data():
-    data = read_json("people.json")
+    data = read_json("sixt_stations.json")
     new_data = []
     for d in data:
-        address = d["address"] + " Berlin"
+        address = d["subtitle"]
         url = f"https://maps.googleapis.com/maps/api/geocode/json?address={address}&key={API_KEY}"
         x = requests.get(url)
 
@@ -17,17 +17,16 @@ def get_google_latlng_data():
             if x.status_code == 200:
                 address_components = x.json()
                 coordinates = address_components["results"][0]["geometry"]["location"]
-                formatted_address = address_components["results"][0]["formatted_address"]
-                new_entry = {"id": d["id"], "name": d["name"], "address": formatted_address}
-                new_entry.update(coordinates)
-                new_data.append(new_entry)
+
+                d.update(coordinates)
+                new_data.append(d)
             else:
                 continue
         except Exception as e:
             print(e)
             continue
     print("length of new data", len(new_data))
-    with open(os.getcwd() + "/../../data/people_v2.json", 'w') as f:
+    with open(os.getcwd() + "/../../data/sixt_stations_v2.json", 'w') as f:
         json.dump(new_data, f)
 
 
@@ -127,9 +126,9 @@ def get_sixt_stations():
 
 
 if __name__ == "__main__":
-    # get_google_latlng_data()
+    get_google_latlng_data()
     # get_charging_stations()
     # preprocess_coordinates()
     # generate_addresses()
     # combine_with_people_data()
-    get_sixt_stations()
+    # get_sixt_stations()
