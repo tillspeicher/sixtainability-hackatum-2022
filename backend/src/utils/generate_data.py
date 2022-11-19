@@ -85,12 +85,45 @@ def combine_with_people_data():
 
 def get_charging_stations():
     data = read_json("people_v3.json")
-    for d in data[:3]:
+    charging_stations = []
+    for d in data:
         lat = d["lat"]
         lng = d["lng"]
         url = f"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={lat}%2C{lng}&radius=1500&type=chargingstation&keyword=chargingStation&key={API_KEY}"
-        x = requests.get(url)
-        print(x)
+        response = requests.get(url)
+        try:
+            if response.status_code == 200:
+                response = response.json()
+                response = response["results"]
+                lat = response[0]["geometry"]["location"]["lat"]
+                lng = response[0]["geometry"]["location"]["lng"]
+                name = response[0]['name']
+                vicinity = response[0]['vicinity']
+                rating = response[0]['rating']
+                user_ratings_total = response[0]['user_ratings_total']
+                station = {"name": name, "lat":lat, "lng":lng, "vicinity": vicinity, "rating":rating, "user_ratings_total":user_ratings_total}
+                charging_stations.append(station)
+            else:
+                continue
+        except Exception as e:
+            continue
+    print("length of new data", len(charging_stations))
+    with open(os.getcwd() + "/../../data/charging_stations.json", 'w') as f:
+        json.dump(charging_stations, f)
+
+
+def get_sixt_stations():
+    location = "Munich"
+    url = f"https://api.orange.sixt.com/v1/locations?term=Munich&vehicleType=car&type=station"
+    response = requests.get(url)
+    try:
+        if response.status_code == 200:
+            response = response.json()
+    except Exception as e:
+        print(e)
+    print("length of new data", len(response))
+    with open(os.getcwd() + "/../../data/sixt_stations.json", 'w') as f:
+        json.dump(response, f)
 
 
 if __name__ == "__main__":
@@ -98,4 +131,5 @@ if __name__ == "__main__":
     # get_charging_stations()
     # preprocess_coordinates()
     # generate_addresses()
-    combine_with_people_data()
+    # combine_with_people_data()
+    get_sixt_stations()
