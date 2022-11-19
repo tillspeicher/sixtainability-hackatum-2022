@@ -19,6 +19,8 @@ module.exports = {
       yellow: colors.amber,
       pink: colors.fuchsia,
       zinc: colors.zinc,
+      slate: colors.slate,
+      teal: colors.teal,
       orange: "#ff5f00",
     },
   },
