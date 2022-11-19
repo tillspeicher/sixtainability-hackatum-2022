@@ -28,7 +28,8 @@ def get_google_data():
             if x.status_code == 200:
                 address_components = x.json()
                 coordinates = address_components["results"][0]["geometry"]["location"]
-                new_entry = {"id": d["id"], "name": d["name"],  "address": address}
+                formatted_address = address_components["results"][0]["formatted_address"]
+                new_entry = {"id": d["id"], "name": d["name"],  "address": formatted_address}
                 new_entry.update(coordinates)
                 new_data.append(new_entry)
             else:
