@@ -33,7 +33,7 @@ async def read_main():
 
 @app.get("/get_user")
 async def get_people(user_id: str):
-    data = get_data("people_v2.json")
+    data = read_json("people_v3.json")
     user = list(filter(lambda p_id: p_id["id"] == user_id, data))[0]
     return user
 
