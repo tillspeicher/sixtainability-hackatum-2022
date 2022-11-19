@@ -11,6 +11,8 @@ COPY ./data/sixt_stations_v2.json ./backend/data/sixt_stations_v2.json
 
 #CMD ["python", "src/main.py"]
 WORKDIR /backend/src
+CMD ls
+CMD pwd
 CMD gunicorn -w 3 -k uvicorn.workers.UvicornWorker app.app:app --bind 0.0.0.0:8000
 
 
