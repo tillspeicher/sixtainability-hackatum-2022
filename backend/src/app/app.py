@@ -1,12 +1,7 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from glob import glob
-import os
-# print(glob(os.getcwd() +"/*/", recursive = True))
-#
-# print(os.getcwd())
-from utils.utilities import *
 
+from utils.utilities import *
 
 app = FastAPI(title="Sixtainability API")
 
@@ -31,13 +26,27 @@ async def read_main():
     return {"msg": "Hello World !!!!"}
 
 
-@app.get("/get_user")
-async def get_people(user_id: str):
+@app.get("/get_user_by_id")
+async def get_user(user_id: str):
     data = read_json("people_v3.json")
     user = list(filter(lambda p_id: p_id["id"] == user_id, data))[0]
     return user
 
 
-@app.get("/get_area")
-async def get_people():
-    return {"msg": "Get area !!!!"}
+@app.get("/get_sixt_stations")
+async def get_stations():
+    stations = read_json("sixt_stations_v2.json")
+    return stations
+
+
+@app.get("/get_charging_stations")
+async def get_charging_stations():
+    charging_stations = read_json("charging_stations.json")
+    return charging_stations
+
+
+@app.get("/get_all_users")
+async def get_all_users():
+    users = read_json("people_v3.json")
+    return users
+
