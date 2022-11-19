@@ -1,34 +1,12 @@
-import {
-    AppBar,
-    Toolbar,
-    IconButton,
-    Typography,
-    Grid,
-    Box,
-    Paper,
-} from '@mui/material';
-import { styled } from '@mui/material/styles';
 import type { DashboardBoxProps } from "./types"
 
 export const DashboardBox: React.FC<DashboardBoxProps> = (props) => {
 return (
-    <CardBase elevation={5}>
-        <Typography variant="h6" color="inherit" component="div">
+    <div className="w-full h-full bg-zinc-800 drop-shadow-md rounded-sm">
+        <p className="text-white text-center text-xl p-2">
             {props.title}
-        </Typography>
+        </p>
         {props.children}
-    </CardBase>
+    </div>
     )
 }
-
-const CardBase = styled(Paper)(({ theme }) => ({
-  // backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-  margin: 8,
-  height: "100vh",
-}));
-

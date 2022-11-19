@@ -1,9 +1,5 @@
 import {
-    AppBar,
-    Toolbar,
-    IconButton,
     Typography,
-    Grid,
     Box,
 } from '@mui/material';
 import Slider from '@mui/material/Slider';
@@ -13,31 +9,31 @@ import type { DashboardProps } from "./types"
 
 export function Dashboard({ prop = "Dashboard" }: DashboardProps) {
 return (
-    <div className="w-full">
-        <div className="bg-white w-full h-14 drop-shadow-md">
-            <h5>
+    <div className="w-full h-screen bg-black">
+        <div className="w-full h-12 bg-zinc-800 drop-shadow-md mb-1 justify-center content-center">
+            <p className="text-white text-center text-xl">
                 Such EVs, much wow
-            </h5>
+            </p>
         </div>
-    <Grid container spacing={0}>
-        <Grid xs={3}>
-            <DashboardBox title={"Info"}>
-                Cars, Drivers, etc.
-            </DashboardBox>
-        </Grid>
-        <Grid xs={6}>
-            <DashboardBox title={"Map"}>
-            </DashboardBox>
-        </Grid>
-        <Grid xs={3}>
-            <DashboardBox title={"Controls"}>
-                <Box sx={{ margin: 4 }}>
-                    <SliderControl title={"New driver arrival rate"} />
-                    <SliderControl title={"Charged return probability"} />
-                </Box>
-            </DashboardBox>
-        </Grid>
-    </Grid>
+        <div className="table w-full h-full pt-2" >
+            <div className="table-cell h-full w-3/12 px-1.5">
+                <DashboardBox title={"Info"}>
+                    Cars, Drivers, etc.
+                </DashboardBox>
+            </div>
+            <div className="table-cell h-full w-6/12 px-1.5">
+                <DashboardBox title={"Map"}>
+                </DashboardBox>
+            </div>
+            <div className="table-cell h-full w-3/12 px-1.5">
+                <DashboardBox title={"Controls"}>
+                    <div className="p-4">
+                        <SliderControl title={"New driver arrival rate"} />
+                        <SliderControl title={"Charged return probability"} />
+                    </div>
+                </DashboardBox>
+            </div>
+        </div>"
     </div>
 )}
 
