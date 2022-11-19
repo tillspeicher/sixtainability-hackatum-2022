@@ -9,6 +9,7 @@ import Switch from '@mui/material/Switch';
 import Iframe from "react-iframe"
 
 import { DashboardBox } from "../DashboardBox"
+
 import type { DashboardProps } from "./types"
 import sixtainabilityLogo from "~/assets/sixtainability.png"
 
@@ -33,15 +34,19 @@ return (
                 <DashboardBox title={"Controls"}>
                     <SwitchControl
                         title="Areas"
+                        valueId="areas"
                     />
                     <SwitchControl
                         title="Users"
+                        valueId="users"
                     />
                     <SwitchControl
                         title="Chargers"
+                        valueId="charger"
                     />
                     <SwitchControl
                         title="Stations"
+                        valueId="stations"
                     />
                 </DashboardBox>
             </div>
