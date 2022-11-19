@@ -6,9 +6,9 @@ import { theme } from "~/styles/theme"
 export function App() {
   return (
     <StyledEngineProvider injectFirst>
-        <ThemeProvider theme={theme}>
-            <Home />
-        </ThemeProvider>
+      <ThemeProvider theme={theme}>
+        <Home />
+      </ThemeProvider>
     </StyledEngineProvider>
   )
 }

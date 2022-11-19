@@ -3,11 +3,13 @@ import {
     Box,
 } from '@mui/material';
 import Slider from '@mui/material/Slider';
+import Iframe from "react-iframe"
 
 import { DashboardBox } from "../DashboardBox"
 import type { DashboardProps } from "./types"
 
 export function Dashboard({ prop = "Dashboard" }: DashboardProps) {
+
 return (
     <div className="w-full h-screen bg-black">
         <div className="w-full h-12 bg-zinc-800 drop-shadow-md mb-1 justify-center content-center">
@@ -23,6 +25,13 @@ return (
             </div>
             <div className="table-cell h-full w-6/12 px-1.5">
                 <DashboardBox title={"Map"}>
+                    <Iframe
+                        url="http://127.0.0.1:5000"
+                        width="100%"
+                        height="100%"
+                        id="myId"
+                        styles={{ borderWidth: "0" }}
+                    />
                 </DashboardBox>
             </div>
             <div className="table-cell h-full w-3/12 px-1.5">
@@ -35,19 +44,20 @@ return (
             </div>
         </div>"
     </div>
-)}
+  )
+}
 
 type SliderControlProps = {
-    title: string
+  title: string
 }
 
 const SliderControl: React.FC<SliderControlProps> = (props) => {
-    return (
-        <Box sx={{ marginTop: 3 }}>
-            <Typography variant="body1" color="inherit" component="div">
-                New driver arrival rate
-            </Typography>
-            <Slider />
-        </Box>
-    )
+  return (
+    <Box sx={{ marginTop: 3 }}>
+      <Typography variant="body1" color="inherit" component="div">
+        New driver arrival rate
+      </Typography>
+      <Slider />
+    </Box>
+  )
 }
