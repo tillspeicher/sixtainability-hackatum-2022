@@ -1,48 +1,41 @@
-import {
-    Typography,
-    Box,
-} from '@mui/material';
-import Slider from '@mui/material/Slider';
+import { Typography, Box } from "@mui/material"
+import Slider from "@mui/material/Slider"
 import Iframe from "react-iframe"
 
 import { DashboardBox } from "../DashboardBox"
+
 import type { DashboardProps } from "./types"
 
 export function Dashboard({ prop = "Dashboard" }: DashboardProps) {
-
-return (
+  return (
     <div className="w-full h-screen bg-black">
-        <div className="w-full h-12 bg-zinc-800 drop-shadow-md mb-1 justify-center content-center">
-            <p className="text-orange text-center text-xl">
-                Such EVs, much wow
-            </p>
+      <div className="w-full h-12 bg-zinc-800 drop-shadow-md mb-1 justify-center content-center">
+        <p className="text-orange text-center text-xl">Such EVs, much wow</p>
+      </div>
+      <div className="table w-full h-full pt-2">
+        <div className="table-cell h-full w-3/12 px-1.5">
+          <DashboardBox title={"Info"}>Cars, Drivers, etc.</DashboardBox>
         </div>
-        <div className="table w-full h-full pt-2" >
-            <div className="table-cell h-full w-3/12 px-1.5">
-                <DashboardBox title={"Info"}>
-                    Cars, Drivers, etc.
-                </DashboardBox>
+        <div className="table-cell h-full w-6/12 px-1.5">
+          <DashboardBox title={"Map"}>
+            <Iframe
+              url="http://127.0.0.1:5000"
+              width="100%"
+              height="100%"
+              id="myId"
+              styles={{ borderWidth: "0" }}
+            />
+          </DashboardBox>
+        </div>
+        <div className="table-cell h-full w-3/12 px-1.5">
+          <DashboardBox title={"Controls"}>
+            <div className="p-4">
+              <SliderControl title={"New driver arrival rate"} />
+              <SliderControl title={"Charged return probability"} />
             </div>
-            <div className="table-cell h-full w-6/12 px-1.5">
-                <DashboardBox title={"Map"}>
-                    <Iframe
-                        url="http://127.0.0.1:5000"
-                        width="100%"
-                        height="100%"
-                        id="myId"
-                        styles={{ borderWidth: "0" }}
-                    />
-                </DashboardBox>
-            </div>
-            <div className="table-cell h-full w-3/12 px-1.5">
-                <DashboardBox title={"Controls"}>
-                    <div className="p-4">
-                        <SliderControl title={"New driver arrival rate"} />
-                        <SliderControl title={"Charged return probability"} />
-                    </div>
-                </DashboardBox>
-            </div>
-        </div>"
+          </DashboardBox>
+        </div>
+      </div>
     </div>
   )
 }
