@@ -35,6 +35,7 @@ export function Dashboard({ prop = "Dashboard" }: DashboardProps) {
   const [showUsers, setShowUsers] = React.useState(false)
   const [showChargers, setShowChargers] = React.useState(false)
   const [showStations, setShowStations] = React.useState(false)
+  const [showAreas, setShowAreas] = React.useState(true)
 
   return (
     <div className="w-full h-screen bg-black flex flex-col overflow-hidden">
@@ -46,7 +47,11 @@ export function Dashboard({ prop = "Dashboard" }: DashboardProps) {
       <div className="flex w-full h-full pt-2 content-center justify-center flex-row">
         <div className="h-full w-3/12 px-1.5">
           <DashboardBox title={"Controls"}>
-            <SwitchControl title="Areas" valueId="areas" onChange={() => {}} />
+            <SwitchControl
+              title="Areas"
+              valueId="areas"
+              onChange={setShowAreas}
+            />
             <SwitchControl
               title="Users"
               valueId="users"
@@ -70,6 +75,12 @@ export function Dashboard({ prop = "Dashboard" }: DashboardProps) {
               users={usersToMapItems(showUsers ? users ?? [] : [])}
               chargers={chargersToMapItems(showChargers ? chargers ?? [] : [])}
               stations={stationsToMapItems(showStations ? stations ?? [] : [])}
+              allItems={{
+                users: users,
+                chargers: chargers,
+                stations: stations,
+              }}
+              showAreas={showAreas}
             />
           </DashboardBox>
         </div>
