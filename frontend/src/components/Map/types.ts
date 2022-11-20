@@ -1,4 +1,4 @@
-import { MapItem } from "~/controllers/definitions"
+import { MapItem, AreaInfo } from "~/controllers/definitions"
 
 export type MapProps = {
   prop?: string
@@ -7,4 +7,5 @@ export type MapProps = {
   stations: MapItem[]
   allItems: Record<string, unknown>
   showAreas: boolean
+    onAreaSelected: (areaInfo: AreaInfo) => void
 }

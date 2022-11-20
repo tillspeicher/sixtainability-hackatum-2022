@@ -40,6 +40,44 @@ export const UserEntry: React.FC<UserEntryProps> = ({ user, onChangeUser }) => {
   )
 }
 
+type ChargerEntryProps = {
+    charger: Charger
+}
+
+export const ChargerEntry: React.FC<ChargerEntryProps> = ({ charger }) => {
+    return (
+        <BaseItemEntry
+            itemType="charger"
+            title={charger.name}
+        >
+            <div className="flex w-full flex-col content-center justify-center">
+                <p className="text-gray-200 text-md h-full text-bottom">
+                    {charger.vicinity}
+                </p>
+            </div>
+        </BaseItemEntry>
+    )
+}
+
+type StationEntryProps = {
+    station: Station
+}
+
+export const StationEntry: React.FC<StationEntryProps> = ({ station }) => {
+    return (
+        <BaseItemEntry
+            itemType="charger"
+            title={station.title}
+        >
+            <div className="flex w-full flex-col content-center justify-center">
+                <p className="text-gray-200 text-md h-full text-bottom">
+                    {station.subtitle}
+                </p>
+            </div>
+        </BaseItemEntry>
+    )
+}
+
 type BaseItemEntryProps = {
   itemType: ItemType
   title: string

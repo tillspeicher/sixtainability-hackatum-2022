@@ -35,6 +35,7 @@ export function MapBox({
   stations,
   allItems,
   showAreas,
+    onAreaSelected,
 }: MapProps) {
   const mapContainer = useRef(null)
   const map = useRef(null)
@@ -135,7 +136,13 @@ export function MapBox({
             .setHTML(x.features[0].properties.name)
             .addTo(map.current)
 
-          console.log(groupingTable[x.features[0].properties.name])
+            const areaName = x.features[0].properties.name
+            const areaData = groupingTable[areaName]
+          console.log(areaData)
+            onAreaSelected({
+                areaName: areaName,
+                ...areaData,
+            })
         })
       })
 
@@ -151,7 +158,7 @@ export function MapBox({
         map.current.getCanvas().style.cursor = ""
       })
     })
-  })
+  }, [onAreaSelected])
 
   useEffect(() => {
     if (map.current == null) {

@@ -2,16 +2,7 @@ import React from "react"
 
 import { STATION_LIST_ENDPOINT } from "./consts"
 import { loadData } from "./utils"
-import { ListItem, MapItem } from "./definitions"
-
-type Station = {
-    id: string
-    title: string
-    subtitle: string
-    type: string
-    lat: number
-    lng: number
-}
+import { ListItem, MapItem, Station } from "./definitions"
 
 export function useStations(): Station[] | null {
     const [stations, setStations] = React.useState<Station[] | null>(null)

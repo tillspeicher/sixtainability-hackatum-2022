@@ -2,17 +2,7 @@ import React from "react"
 
 import { CHARGER_LIST_ENDPOINT } from "./consts"
 import { loadData } from "./utils"
-import { ListItem, MapItem } from "./definitions"
-
-type Charger = {
-    id: string
-    name: string
-    vicinity: string
-    lat: number
-    lng: number
-    rating: number
-    user_ratings_total: number
-}
+import { ListItem, MapItem, Charger } from "./definitions"
 
 export function useChargers(): Charger[] | null {
     const [chargers, setChargers] = React.useState<Charger[] | null>(null)
