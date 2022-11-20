@@ -110,7 +110,9 @@ type SwitchControlProps = {
 
 const SwitchControl: React.FC<SwitchControlProps> = (props) => {
   return (
-    <ListEntry>
+      <div className="w-full flex justify-between content-start py-2 border-solid border-t-b border-b-0 border-x-0 border-zinc-700">
+    <div className="mx-6 w-full flex flex-row justify-between">
+      <ItemIcon itemType={props.switchType} />
       <p className="text-white text-xl w-20 h-full text-bottom">
         {props.title}
       </p>
@@ -121,10 +123,7 @@ const SwitchControl: React.FC<SwitchControlProps> = (props) => {
           props.onChange(e.target.checked)
         }}
       />
-      <ItemIcon itemType={props.switchType} />
-      <p className="text-white text-xl w-20 h-full text-bottom">
-        {props.title}
-      </p>
-    </ListEntry>
+        </div>
+    </div>
   )
 }
