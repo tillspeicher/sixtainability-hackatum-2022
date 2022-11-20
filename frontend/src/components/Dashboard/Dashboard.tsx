@@ -12,10 +12,8 @@ import polygon from "~/constants/polygons.json"
 import { DashboardBox } from "../DashboardBox"
 
 import type { DashboardProps } from "./types"
-
-import sixtainabilityLogo from "~/assets/sixtainability.png"
-
-// import mapboxgl from "!mapbox-gl" // eslint-disable-line import/no-webpack-loader-syntax
+import {Footer} from "~/components/Footer";
+import {Header} from "~/components/Header";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoibHVnaXRhbiIsImEiOiJjbDhqODRhMXQwdTlnM3ZvNTdtajh1enNuIn0.ThQMOek5mPSAAbPuJJqe8A"
@@ -88,14 +86,6 @@ export function Dashboard({ prop = "Dashboard" }: DashboardProps) {
   })
   return (
     <div className="w-full h-screen bg-black flex flex-col overflow-hidden">
-      <div className="flex w-full h-12 bg-orange drop-shadow-md justify-between content-center">
-        <div className="w-full flex justify-between content-center mx-2">
-          <img className="h-14" src={sixtainabilityLogo} alt={"Logo"} />
-          {/* <p className="text-orange text-center text-3xl"> */}
-          {/*     Such EVs, much wow */}
-          {/* </p> */}
-        </div>
-      </div>
       <div className="flex w-full h-full pt-2 content-center justify-center flex-row">
         <div className="h-full w-3/12 px-1.5">
           <DashboardBox title={"Controls"}>
@@ -134,6 +124,7 @@ export function Dashboard({ prop = "Dashboard" }: DashboardProps) {
           </DashboardBox>
         </div>
       </div>
+      <Footer/>
     </div>
   )
 }
