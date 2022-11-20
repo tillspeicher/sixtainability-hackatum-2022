@@ -5,3 +5,7 @@ declare module "*.svg" {
     React.SVGProps<SVGSVGElement> & { title?: string }
   >
 }
+
+declare module "*.png"
+declare module "*.jpeg"
+declare module "*.jpg"
