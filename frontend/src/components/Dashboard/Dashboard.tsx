@@ -1,5 +1,3 @@
-import { Box, Typography } from "@mui/material"
-import Slider from "@mui/material/Slider"
 import Switch from "@mui/material/Switch"
 import React, { ReactNode } from "react"
 
@@ -19,11 +17,6 @@ import {
   stationsToMapItems,
   useStations,
 } from "~/controllers/stations"
-import {
-  useUserData,
-  usersToListItems,
-  usersToMapItems,
-} from "~/controllers/userData"
 import {
   useUsers,
   usersToListItems,
