@@ -16,58 +16,76 @@ type UserEntryProps = {
 const BUTTON_COL = "white"
 
 export const UserEntry: React.FC<UserEntryProps> = ({ user, onChangeUser }) => {
+  const arr = user.address.split(",")
   return (
-      <BaseItemEntry itemType={user.isPromoted ? "charger" : "user"} title={user.name}>
+    <BaseItemEntry
+      itemType={user.isPromoted ? "charger" : "user"}
+      title={user.name}
+    >
       <div className="flex w-full flex-col content-center justify-center">
         <p className="text-gray-200 text-md h-full text-bottom">
-            {user.address}
+          {arr.map((a, i) => {
+            return <p key={i}>{a}</p>
+          })}
         </p>
-        <div className="flex h-18 w-1/2 h-12 m-1 bg-green-500 content-center justify-center cursor-pointer"
-            onClick={() => onChangeUser(user.id, true)}>
-            <FontAwesomeIcon icon={faThumbsUp} className={"fa-2xl"} color={BUTTON_COL}
+        {!user.isPromoted ? (
+          <div
+            className="flex h-18 w-1/2 h-12 m-1 bg-green-500 content-center justify-center cursor-pointer rounded-md mt-3 mx-auto"
+            onClick={() => onChangeUser(user.id, true)}
+          >
+            <FontAwesomeIcon
+              icon={faThumbsUp}
+              className={"fa-2xl pt-2"}
+              color={BUTTON_COL}
             />
-        </div>
-    </div>
+          </div>
+        ) : (
+          <div
+            className="flex h-18 w-1/2 h-12 m-1 bg-red-500 content-center justify-center cursor-pointer rounded-md mt-3 mx-auto"
+            onClick={() => onChangeUser(user.id, true)}
+          >
+            <FontAwesomeIcon
+              icon={faThumbsDown}
+              className={"fa-2xl pt-2"}
+              color={BUTTON_COL}
+            />
+          </div>
+        )}
+      </div>
     </BaseItemEntry>
-    )
+  )
 }
 
 type ChargerEntryProps = {
-    charger: Charger
+  charger: Charger
 }
 
 export const ChargerEntry: React.FC<ChargerEntryProps> = ({ charger }) => {
-    return (
-        <BaseItemEntry
-            itemType="charger"
-            title={charger.name}
-        >
-            <div className="flex w-full flex-col content-center justify-center">
-                <p className="text-gray-200 text-md h-full text-bottom">
-                    {charger.vicinity}
-                </p>
-            </div>
-        </BaseItemEntry>
-    )
+  return (
+    <BaseItemEntry itemType="charger" title={charger.name}>
+      <div className="flex w-full flex-col content-center justify-center">
+        <p className="text-gray-200 text-md h-full text-bottom">
+          {charger.vicinity}
+        </p>
+      </div>
+    </BaseItemEntry>
+  )
 }
 
 type StationEntryProps = {
-    station: Station
+  station: Station
 }
 
 export const StationEntry: React.FC<StationEntryProps> = ({ station }) => {
-    return (
-        <BaseItemEntry
-            itemType="charger"
-            title={station.title}
-        >
-            <div className="flex w-full flex-col content-center justify-center">
-                <p className="text-gray-200 text-md h-full text-bottom">
-                    {station.subtitle}
-                </p>
-            </div>
-        </BaseItemEntry>
-    )
+  return (
+    <BaseItemEntry itemType="charger" title={station.title}>
+      <div className="flex w-full flex-col content-center justify-center">
+        <p className="text-gray-200 text-md h-full text-bottom">
+          {station.subtitle}
+        </p>
+      </div>
+    </BaseItemEntry>
+  )
 }
 
 type BaseItemEntryProps = {
