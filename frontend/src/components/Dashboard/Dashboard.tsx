@@ -57,7 +57,7 @@ export function Dashboard({ prop = "Dashboard" }: DashboardProps) {
           </DashboardBox>
         </div>
         <div className="h-full w-6/12 px-1.5">
-          <DashboardBox title={"Map"}>
+          <DashboardBox>
             <Map
               users={usersToMapItems(showUsers ? users ?? [] : [])}
               chargers={chargersToMapItems(showChargers ? chargers ?? [] : [])}
@@ -67,10 +67,12 @@ export function Dashboard({ prop = "Dashboard" }: DashboardProps) {
         </div>
         <div className="h-full w-3/12 px-1.5">
           <DashboardBox title={"Info"}>
-            {users &&
-              usersToListItems(users).map((user) => (
-                <InfoItem key={user.id} {...user} />
-              ))}
+              <div className="w-full overflow-y-auto">
+                {users &&
+                usersToListItems(users).map((user) => (
+                    <InfoItem key={user.id} {...user} />
+                ))}
+              </div>"
           </DashboardBox>
         </div>
       </div>
