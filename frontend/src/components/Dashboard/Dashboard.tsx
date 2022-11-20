@@ -80,7 +80,7 @@ export function Dashboard({ prop = "Dashboard" }: DashboardProps) {
             />
           </DashboardBox>
         </div>
-        <div className="h-full w-6/12 px-1.5">
+        <div className="h-full flex-1 px-1.5">
           <DashboardBox>
             <Map
               users={usersToMapItems(showUsers ? users ?? [] : [])}
@@ -96,8 +96,8 @@ export function Dashboard({ prop = "Dashboard" }: DashboardProps) {
             />
           </DashboardBox>
         </div>
+        {selectedArea != null && (
         <div className="h-full w-3/12 px-1.5">
-            {selectedArea != null && (
                 <DashboardBox title={selectedArea.areaName}>
                     <div className="w-full h-full overflow-y-auto">
                         <div className="w-full">
@@ -115,8 +115,8 @@ export function Dashboard({ prop = "Dashboard" }: DashboardProps) {
                         </div>
                     </div>
                 </DashboardBox>
-            )}
         </div>
+        )}
       </div>
       {/* <Footer /> */}
     </div>
