@@ -7,6 +7,7 @@ import type { DashboardProps } from "./types"
 import {Footer} from "~/components/Footer"
 import { ItemIcon } from "~/components/ItemIcon"
 import { ItemType } from "~/controllers/definitions"
+import { UserEntry, ListEntry } from "~/components/ItemEntries"
 
 import {
   chargersToListItems,
@@ -80,8 +81,8 @@ export function Dashboard({ prop = "Dashboard" }: DashboardProps) {
               <div className="w-full h-full overflow-y-auto">
                 <div className="w-full">
                     {users &&
-                    usersToListItems(users).map((user) => (
-                        <InfoItem key={user.id} {...user} />
+                        users.map((user) => (
+                        <UserEntry key={user.id} user={user} />
                     ))}
                 </div>
             </div>
@@ -131,24 +132,5 @@ const InfoItem: React.FC<InfoItemProps> = (props) => {
         </p>
       </div>
     </ListEntry>
-  )
-}
-
-type ListEntryProps = {
-  hoverable?: boolean
-  children: ReactNode
-}
-
-const ListEntry: React.FC<ListEntryProps> = (props) => {
-  return (
-    <div
-      className={`w-full flex justify-between content-start py-2 border-solid border-t-b border-b-0 border-x-0 border-zinc-700 ${
-        props.hoverable ? "hover:bg-zinc-700 cursor-pointer" : ""
-      }`}
-    >
-      <div className="mx-6 w-full flex flex-row justify-between">
-        {props.children}
-      </div>
-    </div>
   )
 }

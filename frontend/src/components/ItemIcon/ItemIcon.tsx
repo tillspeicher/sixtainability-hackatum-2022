@@ -22,7 +22,7 @@ export function ItemIcon({
         icon = <FontAwesomeIcon icon={faCar} color={SIXT_COLOR} className={ICON_CLASS} />
     }
     return (
-        <div className='flex content-center justify-center h-full'>
+        <div className='flex content-center justify-center h-full m-2'>
             {icon}
         </div>
     )
