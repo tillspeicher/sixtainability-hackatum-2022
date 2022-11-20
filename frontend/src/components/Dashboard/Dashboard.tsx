@@ -20,11 +20,6 @@ import {
   useStations,
 } from "~/controllers/stations"
 import {
-  useUserData,
-  usersToListItems,
-  usersToMapItems,
-} from "~/controllers/userData"
-import {
   useUsers,
   usersToListItems,
   usersToMapItems,
