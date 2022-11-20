@@ -48,17 +48,17 @@ export function useChargers(): ChargerState {
 }
 
 export function chargersToListItems(chargers: Charger[]): ListItem[] {
-    return chargers.map((charger) => ({
-        id: charger.id,
-        title: charger.name,
-        subtitle: charger.vicinity,
-    }))
+  return chargers.map((charger) => ({
+    id: charger.id,
+    title: charger.name,
+    subtitle: charger.vicinity,
+  }))
 }
 
 export function chargersToMapItems(chargers: Charger[]): MapItem[] {
-    return chargers.map((charger) => ({
-        id: charger.id,
-        lat: charger.lat,
-        lng: charger.lng,
-    }))
+  return chargers.map((charger) => ({
+    id: charger.id,
+    lat: charger.lat,
+    lng: charger.lng,
+  }))
 }
