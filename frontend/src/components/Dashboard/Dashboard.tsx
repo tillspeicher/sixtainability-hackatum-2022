@@ -10,38 +10,72 @@ import type { DashboardProps } from "./types"
 
 import sixtainabilityLogo from "~/assets/sixtainability.png"
 import {
+  chargersToListItems,
+  chargersToMapItems,
+  useChargers,
+} from "~/controllers/chargers"
+import {
+  stationsToListItems,
+  stationsToMapItems,
+  useStations,
+} from "~/controllers/stations"
+import {
   useUserData,
   usersToListItems,
   usersToMapItems,
 } from "~/controllers/userData"
+import {
+  useUsers,
+  usersToListItems,
+  usersToMapItems,
+} from "~/controllers/users"
 
 // import mapboxgl from "!mapbox-gl" // eslint-disable-line import/no-webpack-loader-syntax
 
 export function Dashboard({ prop = "Dashboard" }: DashboardProps) {
-  const users = useUserData()
+  const users = useUsers()
+  const chargers = useChargers()
+  const stations = useStations()
+
+  const [showUsers, setShowUsers] = React.useState(false)
+  const [showChargers, setShowChargers] = React.useState(false)
+  const [showStations, setShowStations] = React.useState(false)
 
   return (
     <div className="w-full h-screen bg-black flex flex-col overflow-hidden">
       <div className="flex w-full h-12 bg-orange drop-shadow-md justify-between content-center">
         <div className="w-full flex justify-between content-center mx-2">
           <img className="h-14" src={sixtainabilityLogo} alt={"Logo"} />
-          {/* <p className="text-orange text-center text-3xl"> */}
-          {/*     Such EVs, much wow */}
-          {/* </p> */}
         </div>
       </div>
       <div className="flex w-full h-full pt-2 content-center justify-center flex-row">
         <div className="h-full w-3/12 px-1.5">
           <DashboardBox title={"Controls"}>
-            <SwitchControl title="Areas" valueId="areas" />
-            <SwitchControl title="Users" valueId="users" />
-            <SwitchControl title="Chargers" valueId="charger" />
-            <SwitchControl title="Stations" valueId="stations" />
+            <SwitchControl title="Areas" valueId="areas" onChange={() => {}} />
+            <SwitchControl
+              title="Users"
+              valueId="users"
+              onChange={setShowUsers}
+            />
+            <SwitchControl
+              title="Chargers"
+              valueId="charger"
+              onChange={setShowChargers}
+            />
+            <SwitchControl
+              title="Stations"
+              valueId="stations"
+              onChange={setShowStations}
+            />
           </DashboardBox>
         </div>
         <div className="h-full w-6/12 px-1.5">
           <DashboardBox title={"Map"}>
-            <Map users={users ?? []} chargers={[]} stations={[]} />
+            <Map
+              users={usersToMapItems(showUsers ? users ?? [] : [])}
+              chargers={chargersToMapItems(showChargers ? chargers ?? [] : [])}
+              stations={stationsToMapItems(showStations ? stations ?? [] : [])}
+            />
           </DashboardBox>
         </div>
         <div className="h-full w-3/12 px-1.5">
@@ -57,24 +91,10 @@ export function Dashboard({ prop = "Dashboard" }: DashboardProps) {
   )
 }
 
-type SliderControlProps = {
-  title: string
-}
-
-const SliderControl: React.FC<SliderControlProps> = (props) => {
-  return (
-    <Box sx={{ marginTop: 3 }}>
-      <Typography variant="body1" color="inherit" component="div">
-        New driver arrival rate
-      </Typography>
-      <Slider />
-    </Box>
-  )
-}
-
 type SwitchControlProps = {
   title: string
   valueId: string
+  onChange: (activated: boolean) => void
 }
 
 const SwitchControl: React.FC<SwitchControlProps> = (props) => {
@@ -83,7 +103,12 @@ const SwitchControl: React.FC<SwitchControlProps> = (props) => {
       <p className="text-white text-xl w-20 h-full text-bottom">
         {props.title}
       </p>
-      <Switch aria-label={props.valueId} />
+      <Switch
+        aria-label={props.valueId}
+        onChange={(e) => {
+          props.onChange(e.target.checked)
+        }}
+      />
     </ListEntry>
   )
 }
