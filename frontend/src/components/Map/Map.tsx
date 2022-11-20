@@ -12,6 +12,11 @@ let max_long = 0
 let max_lat = 0
 let min_long = 180
 let min_lat = 180
+let groupingTable: {
+  [key: string]: {
+    [key: string]: number
+  }
+} = {}
 
 // function intersect(latLng: any, minMax: any) {
 //   console.log(latLng)
@@ -28,7 +33,7 @@ let min_lat = 180
 /**
  * @return {boolean} true if (lng, lat) is in bounds
  */
-function contains(bounds: string | any[], lat: any, lng: any): number {
+function contains(bounds: string | any[], lat: any, lng: any): boolean {
   //https://rosettacode.org/wiki/Ray-casting_algorithm
   let count = 0
   for (let b = 0; b < bounds[0].length; b++) {
@@ -36,7 +41,7 @@ function contains(bounds: string | any[], lat: any, lng: any): number {
     const vertex2 = bounds[0][(b + 1) % bounds[0].length]
     if (west(vertex1, vertex2, lng, lat)) ++count
   }
-  return count % 2
+  return count % 2 === 0
 
   /**
    * @return {boolean} true if (x,y) is west of the line segment connecting A and B
@@ -66,7 +71,7 @@ export function MapBox({ prop = "Map", users, chargers, stations }: MapProps) {
   const map = useRef(null)
   const [lng, setLng] = useState(11.576123)
   const [lat, setLat] = useState(48.137152)
-  const [zoom, setZoom] = useState(9)
+  const [zoom, setZoom] = useState(13)
 
   const geoJSON: any = { type: "FeatureCollection", features: [] }
 
@@ -105,6 +110,38 @@ export function MapBox({ prop = "Map", users, chargers, stations }: MapProps) {
     })
   }
 
+  function createGroupingTable() {
+    // users.forEach((user) => {
+    //   if (
+    //     contains(
+    //       polygon[e.features[0].properties.name],
+    //       user.lngLat.lat,
+    //       user.lngLat.lng
+    //     ) === 0
+    //   ) {
+
+    //   }
+    // })
+
+    chargers.forEach((charger) => {
+      geoJSON.features.forEach((area: any) => {
+        if (
+          contains(
+            polygon[area.geaometry.coordinates],
+            charger.lat,
+            charger.lng
+          )
+        ) {
+          if (groupingTable[area.properties.name]) {
+            groupingTable[area.properties.name].numCharger += 1
+          } else {
+            groupingTable[area.properties.name]["numCharger"] += 1
+          }
+        }
+      })
+    })
+  }
+
   useEffect(() => {
     if (map.current) return // initialize map only once
     map.current = new mapboxgl.Map({
@@ -132,7 +169,7 @@ export function MapBox({ prop = "Map", users, chargers, stations }: MapProps) {
           type: "fill",
           source: `${x}`,
           paint: {
-            "fill-color": "rgba(200, 100, 240, 0.3)",
+            "fill-color": "rgba(200, 100, 240, 0.2)",
             "fill-outline-color": "rgba(200, 100, 240, 1)",
           },
         })

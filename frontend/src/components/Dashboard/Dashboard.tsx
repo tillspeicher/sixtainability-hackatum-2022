@@ -5,16 +5,20 @@ import React, { ReactNode } from "react"
 
 import { DashboardBox } from "../DashboardBox"
 import { Map } from "../Map"
-import { useUserData, usersToListItems, usersToMapItems } from "~/controllers/userData"
 
 import type { DashboardProps } from "./types"
 
 import sixtainabilityLogo from "~/assets/sixtainability.png"
+import {
+  useUserData,
+  usersToListItems,
+  usersToMapItems,
+} from "~/controllers/userData"
 
 // import mapboxgl from "!mapbox-gl" // eslint-disable-line import/no-webpack-loader-syntax
 
 export function Dashboard({ prop = "Dashboard" }: DashboardProps) {
-    const users = useUserData()
+  const users = useUserData()
 
   return (
     <div className="w-full h-screen bg-black flex flex-col overflow-hidden">
@@ -37,21 +41,15 @@ export function Dashboard({ prop = "Dashboard" }: DashboardProps) {
         </div>
         <div className="h-full w-6/12 px-1.5">
           <DashboardBox title={"Map"}>
-            <Map
-                users={users ?? []}
-                chargers={[]}
-                stations={[]}
-              />
+            <Map users={users ?? []} chargers={[]} stations={[]} />
           </DashboardBox>
         </div>
         <div className="h-full w-3/12 px-1.5">
           <DashboardBox title={"Info"}>
-              {users && usersToListItems(users).map((user) => (
-                <InfoItem
-                    key={user.id}
-                    {...user}
-                />
-            ))}
+            {users &&
+              usersToListItems(users).map((user) => (
+                <InfoItem key={user.id} {...user} />
+              ))}
           </DashboardBox>
         </div>
       </div>

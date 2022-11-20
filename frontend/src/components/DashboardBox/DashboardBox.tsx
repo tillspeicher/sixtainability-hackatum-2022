@@ -9,7 +9,9 @@ export const DashboardBox: React.FC<DashboardBoxProps> = (props) => {
       {props.title && (
         <p className="text-orange text-center text-2xl p-4">{props.title}</p>
       )}
+      {/* <div style={{ overflowY: "scroll" }}> */}
       {props.children}
+      {/* </div> */}
     </div>
   )
 }
@@ -18,6 +20,6 @@ DashboardBox.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
-  ]).isRequired,
+  ]),
   title: PropTypes.string.isRequired,
 }
