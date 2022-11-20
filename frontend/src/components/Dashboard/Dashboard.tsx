@@ -50,21 +50,25 @@ export function Dashboard({ prop = "Dashboard" }: DashboardProps) {
             <SwitchControl
               title="Areas"
               valueId="areas"
+              checked={showAreas}
               onChange={setShowAreas}
             />
             <SwitchControl
               title="Users"
               valueId="users"
+              checked={showUsers}
               onChange={setShowUsers}
             />
             <SwitchControl
               title="Chargers"
               valueId="charger"
+              checked={showChargers}
               onChange={setShowChargers}
             />
             <SwitchControl
               title="Stations"
               valueId="stations"
+              checked={showStations}
               onChange={setShowStations}
             />
           </DashboardBox>
@@ -101,6 +105,7 @@ type SwitchControlProps = {
   title: string
   valueId: string
   onChange: (activated: boolean) => void
+  checked: boolean
 }
 
 const SwitchControl: React.FC<SwitchControlProps> = (props) => {
@@ -111,6 +116,7 @@ const SwitchControl: React.FC<SwitchControlProps> = (props) => {
       </p>
       <Switch
         aria-label={props.valueId}
+        checked={props.checked}
         onChange={(e) => {
           props.onChange(e.target.checked)
         }}

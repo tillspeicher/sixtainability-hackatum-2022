@@ -20,18 +20,6 @@ let groupingTable: {
   }
 } = null
 
-// function intersect(latLng: any, minMax: any) {
-//   console.log(latLng)
-//   console.log(minMax)
-
-//   if (latLng.lat >= minMax.min_lat && latLng.lat <= minMax.max_lat) {
-//     if (latLng.long >= minMax.min_long && latLng.long <= minMax.min_long) {
-//       return true
-//     }
-//   }
-//   return false
-// }
-
 /**
  * @return {boolean} true if (lng, lat) is in bounds
  */
@@ -130,70 +118,82 @@ export function MapBox({
       zoom: zoom,
     })
 
-    map.current.on(
-      "load",
-      () => {
-        const x = "Munich"
+    map.current.on("load", () => {
+      const x = "Munich"
 
-        // Add a layer showing the state polygons.
-        geoJSON.features.forEach((e: any) => {
-          const gradient =
-            (groupingTable[e.properties.name].numCharger -
-              groupingTable.minMax.min) /
-            (groupingTable.minMax.max - groupingTable.minMax.min)
+      // Add a layer showing the state polygons.
+      geoJSON.features.forEach((e: any) => {
+        const gradient =
+          (groupingTable[e.properties.name].numCharger -
+            groupingTable.minMax.min) /
+          (groupingTable.minMax.max - groupingTable.minMax.min)
 
-          const blue = 0
-          const green = Math.round(gradient * 255)
-          const red = Math.round(
-            (-3 * (gradient * gradient) + 2.5 * gradient + 0.5) * 255
-          )
+        const blue = 0
+        const green = Math.round(gradient * 255)
+        const red = Math.round(
+          (-3 * (gradient * gradient) + 2.5 * gradient + 0.5) * 255
+        )
 
-          // Add a source for the state polygons.
-          // for (const x in polygon as any) {
-          map.current.addSource(`${e.properties.name}-source`, {
-            type: "geojson",
-            data: e,
-          })
-          map.current.addLayer({
-            id: `${e.properties.name}-layer`,
-            type: "fill",
-            source: `${e.properties.name}-source`,
-            layout: {
-              // Make the layer visible by default.
-              visibility: showAreas ? "visible" : "none",
-            },
-            paint: {
-              "fill-color": `rgba(${red}, ${green}, ${blue}, 0.2)`,
-              "fill-outline-color": "rgba(244, 129, 30, 1)",
-            },
-          })
-
-          // When a click event occurs on a feature in the states layer,
-          // open a popup at the location of the click, with description
-          // HTML from the click event's properties.
-          map.current.on("click", `${e.properties.name}-layer`, (e: any) => {
-            new mapboxgl.Popup()
-              .setLngLat(e.lngLat)
-              .setHTML(e.features[0].properties.name)
-              .addTo(map.current)
-          })
+        // Add a source for the state polygons.
+        // for (const x in polygon as any) {
+        map.current.addSource(`${e.properties.name}-source`, {
+          type: "geojson",
+          data: e,
+        })
+        map.current.addLayer({
+          id: `${e.properties.name}-layer`,
+          type: "fill",
+          source: `${e.properties.name}-source`,
+          layout: {
+            // Make the layer visible by default.
+            visibility: showAreas ? "visible" : "none",
+          },
+          paint: {
+            "fill-color": `rgba(${red}, ${green}, ${blue}, 0.2)`,
+            "fill-outline-color": "rgba(244, 129, 30, 1)",
+          },
         })
 
-        // Change the cursor to a pointer when
-        // the mouse is over the states layer.
-        map.current.on("mouseenter", `${x}-layer`, () => {
-          map.current.getCanvas().style.cursor = "pointer"
+        // When a click event occurs on a feature in the states layer,
+        // open a popup at the location of the click, with description
+        // HTML from the click event's properties.
+        map.current.on("click", `${e.properties.name}-layer`, (e: any) => {
+          new mapboxgl.Popup()
+            .setLngLat(e.lngLat)
+            .setHTML(e.features[0].properties.name)
+            .addTo(map.current)
         })
+      })
 
-        // Change the cursor back to a pointer
-        // when it leaves the states layer.
-        map.current.on("mouseleave", `${x}-layer`, () => {
-          map.current.getCanvas().style.cursor = ""
-        })
-      }
-      //}
-    )
+      // Change the cursor to a pointer when
+      // the mouse is over the states layer.
+      map.current.on("mouseenter", `${x}-layer`, () => {
+        map.current.getCanvas().style.cursor = "pointer"
+      })
+
+      // Change the cursor back to a pointer
+      // when it leaves the states layer.
+      map.current.on("mouseleave", `${x}-layer`, () => {
+        map.current.getCanvas().style.cursor = ""
+      })
+    })
   })
+
+  useEffect(() => {
+    if (map.current == null) {
+      return
+    } else if (!map.current.isStyleLoaded()) {
+      return
+    }
+    geoJSON.features.forEach((e: any) => {
+      // Toggle layer visibility by changing the layout object's visibility property.
+      map.current.setLayoutProperty(
+        `${e.properties.name}-layer`,
+        "visibility",
+        showAreas ? "visible" : "none"
+      )
+    })
+  }, [showAreas])
 
   useMarkers(map, users)
   useMarkers(map, chargers)
@@ -232,18 +232,6 @@ function useMarkers(map: RefObject<mapboxgl.Map>, items: MapItem[]) {
 }
 
 function createGroupingTable(allItems: any, geoJSON: any) {
-  // users.forEach((user) => {
-  //   if (
-  //     contains(
-  //       polygon[e.features[0].properties.name],
-  //       user.lngLat.lat,
-  //       user.lngLat.lng
-  //     ) === 0
-  //   ) {
-
-  //   }
-  // })
-
   groupingTable = {}
   // initialize table with 0 chargers
   geoJSON.features.forEach((area: any) => {
