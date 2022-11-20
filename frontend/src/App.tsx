@@ -1,13 +1,12 @@
 import { ThemeProvider, StyledEngineProvider } from "@mui/material/styles"
-
-import { Home } from "~/pages/Home"
 import { theme } from "~/styles/theme"
+import {AppRoutes} from "~/routes";
 
 export function App() {
   return (
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
-        <Home />
+        <AppRoutes/>
       </ThemeProvider>
     </StyledEngineProvider>
   )
