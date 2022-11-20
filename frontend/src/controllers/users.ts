@@ -12,7 +12,7 @@ type User = {
     lng: number
 }
 
-export function useUserData(): User[] | null {
+export function useUsers(): User[] | null {
     const [users, setUsers] = React.useState<User[] | null>(null)
     React.useEffect(() => {
         if (users != null) return
@@ -31,7 +31,7 @@ export function usersToListItems(users: User[]): ListItem[] {
     }))
 }
 
-export function usersToMapItem(users: User[]): MapItem[] {
+export function usersToMapItems(users: User[]): MapItem[] {
     return users.map((user) => ({
         id: user.id,
         lat: user.lat,

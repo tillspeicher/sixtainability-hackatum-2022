@@ -1,7 +1,8 @@
 import mapboxgl, { Map } from "mapbox-gl"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState, RefObject } from "react"
 
 import polygon from "~/constants/polygons.json"
+import { MapItem } from "~/controllers/definitions"
 
 import type { MapProps } from "./types"
 
@@ -78,15 +79,29 @@ export function MapBox({
     })
   })
 
+    useMarkers(map, users)
+    useMarkers(map, chargers)
+    useMarkers(map, stations)
+
+  return <div ref={mapContainer} id="map" className="map-container" />
+}
+
+function useMarkers(map: RefObject<mapboxgl.Map>, items: MapItem[]) {
+    const [markers, setMarkers] = useState<mapboxgl.Marker[]>([])
     useEffect(() => {
         if (map.current == null) return
 
-        users.forEach((user) => {
-            new mapboxgl.Marker()
-                .setLngLat([user.lng, user.lat])
-                .addTo(map.current)
+        markers.forEach((marker) => {
+            marker.remove()
         })
-    }, [users])
 
-  return <div ref={mapContainer} id="map" className="map-container" />
+        const newMarkers = []
+        items.forEach((item) => {
+            const marker = new mapboxgl.Marker()
+                .setLngLat([item.lng, item.lat])
+                .addTo(map.current)
+            newMarkers.push(marker)
+        })
+        setMarkers(newMarkers)
+    }, [items])
 }
