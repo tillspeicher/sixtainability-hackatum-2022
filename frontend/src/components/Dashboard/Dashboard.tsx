@@ -85,13 +85,11 @@ export function Dashboard({ prop = "Dashboard" }: DashboardProps) {
         </div>
         <div className="h-full w-3/12 px-1.5">
           <DashboardBox title={"Info"}>
-              <div className="w-full h-full overflow-y-auto">
-                <div className="w-full">
-                    {users &&
-                        users.map((user) => (
-                        <UserEntry key={user.id} user={user} />
-                    ))}
-                </div>
+            <div className="w-full h-full overflow-y-auto">
+              <div className="w-full">
+                {users &&
+                  users.map((user) => <UserEntry key={user.id} user={user} />)}
+              </div>
             </div>
           </DashboardBox>
         </div>
@@ -111,6 +109,7 @@ type SwitchControlProps = {
 const SwitchControl: React.FC<SwitchControlProps> = (props) => {
   return (
     <ListEntry>
+      <ItemIcon itemType={props.switchType} />
       <p className="text-white text-xl w-20 h-full text-bottom">
         {props.title}
       </p>
@@ -121,10 +120,6 @@ const SwitchControl: React.FC<SwitchControlProps> = (props) => {
           props.onChange(e.target.checked)
         }}
       />
-      <ItemIcon itemType={props.switchType} />
-      <p className="text-white text-xl w-20 h-full text-bottom">
-        {props.title}
-      </p>
     </ListEntry>
   )
 }
