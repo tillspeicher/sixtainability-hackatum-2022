@@ -61,7 +61,7 @@ function contains(bounds: string | any[], lat: any, lng: any): number {
   }
 }
 
-export function MapBox({ prop = "Map" }: MapProps) {
+export function MapBox({ prop = "Map", users, chargers, stations }: MapProps) {
   const mapContainer = useRef(null)
   const map = useRef(null)
   const [lng, setLng] = useState(11.576123)
@@ -174,6 +174,14 @@ export function MapBox({ prop = "Map" }: MapProps) {
       //}
     )
   })
+
+  useEffect(() => {
+    if (map.current == null) return
+
+    users.forEach((user) => {
+      new mapboxgl.Marker().setLngLat([user.lng, user.lat]).addTo(map.current)
+    })
+  }, [users])
 
   return <div ref={mapContainer} id="map" className="map-container" />
 }
