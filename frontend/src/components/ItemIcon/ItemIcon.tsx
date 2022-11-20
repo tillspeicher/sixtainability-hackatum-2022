@@ -1,5 +1,4 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { solid, regular, brands, icon } from '@fortawesome/fontawesome-svg-core/import.macro' // <-- import styles to be used
 import { faFlag, faUser, faBolt, faCar } from '@fortawesome/free-solid-svg-icons'
 
 import type { ItemIconProps } from "./types"
