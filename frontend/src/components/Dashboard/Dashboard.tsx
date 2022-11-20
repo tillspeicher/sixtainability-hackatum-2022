@@ -36,6 +36,14 @@ export function Dashboard({ prop = "Dashboard" }: DashboardProps) {
   const [showChargers, setShowChargers] = React.useState(false)
   const [showStations, setShowStations] = React.useState(false)
   const [showAreas, setShowAreas] = React.useState(false)
+  const [promoted, setPromoted] = React.useState({})
+
+  const handlePromoted = (i: string, p: boolean) => {
+    setPromoted({
+      id: i,
+      promoted: p,
+    })
+  }
 
   return (
     <div className="w-full h-screen bg-black flex flex-col overflow-hidden">
@@ -88,7 +96,13 @@ export function Dashboard({ prop = "Dashboard" }: DashboardProps) {
             <div className="w-full h-full overflow-y-auto">
               <div className="w-full">
                 {users &&
-                  users.map((user) => <UserEntry key={user.id} user={user} />)}
+                  users.map((user) => (
+                    <UserEntry
+                      key={user.id}
+                      user={user}
+                      onChangeUser={handlePromoted}
+                    />
+                  ))}
               </div>
             </div>
           </DashboardBox>
@@ -108,20 +122,20 @@ type SwitchControlProps = {
 
 const SwitchControl: React.FC<SwitchControlProps> = (props) => {
   return (
-      <div className="w-full flex justify-between content-start py-2 border-solid border-t-b border-b-0 border-x-0 border-zinc-700">
-    <div className="mx-6 w-full flex flex-row justify-between">
-      <ItemIcon itemType={props.switchType} />
-      <p className="text-white text-xl w-20 h-full text-bottom">
-        {props.title}
-      </p>
-      <Switch
-        aria-label={props.switchType}
-        checked={props.checked}
-        onChange={(e) => {
-          props.onChange(e.target.checked)
-        }}
-      />
-        </div>
+    <div className="w-full flex justify-between content-start py-2 border-solid border-t-b border-b-0 border-x-0 border-zinc-700">
+      <div className="mx-6 w-full flex flex-row justify-between">
+        <ItemIcon itemType={props.switchType} />
+        <p className="text-white text-xl w-20 h-full text-bottom">
+          {props.title}
+        </p>
+        <Switch
+          aria-label={props.switchType}
+          checked={props.checked}
+          onChange={(e) => {
+            props.onChange(e.target.checked)
+          }}
+        />
+      </div>
     </div>
   )
 }
