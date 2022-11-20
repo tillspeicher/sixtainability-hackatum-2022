@@ -3,8 +3,8 @@ import React, { ReactNode } from "react"
 
 import { Footer } from "~/components/Footer"
 import { ItemIcon } from "~/components/ItemIcon"
-import { ItemType } from "~/controllers/definitions"
-import { UserEntry, ListEntry } from "~/components/ItemEntries"
+import { ItemType, AreaInfo } from "~/controllers/definitions"
+import { UserEntry, ChargerEntry, StationEntry } from "~/components/ItemEntries"
 
 import { DashboardBox } from "../DashboardBox"
 import { Map } from "../Map"
@@ -36,6 +36,8 @@ export function Dashboard({ prop = "Dashboard" }: DashboardProps) {
   const [showChargers, setShowChargers] = React.useState(false)
   const [showStations, setShowStations] = React.useState(false)
   const [showAreas, setShowAreas] = React.useState(false)
+
+    const [selectedArea, setSelectedArea] = React.useState<AreaInfo | null>(null)
 
   return (
     <div className="w-full h-screen bg-black flex flex-col overflow-hidden">
@@ -80,18 +82,22 @@ export function Dashboard({ prop = "Dashboard" }: DashboardProps) {
                 stations: stations,
               }}
               showAreas={showAreas}
+                onAreaSelected={setSelectedArea}
             />
           </DashboardBox>
         </div>
         <div className="h-full w-3/12 px-1.5">
-          <DashboardBox title={"Info"}>
-            <div className="w-full h-full overflow-y-auto">
-              <div className="w-full">
-                {users &&
-                  users.map((user) => <UserEntry key={user.id} user={user} />)}
-              </div>
-            </div>
-          </DashboardBox>
+            {selectedArea != null && (
+                <DashboardBox title={selectedArea.areaName}>
+                    <div className="w-full h-full overflow-y-auto">
+                        <div className="w-full">
+                            {selectedArea.users.map((user) => <UserEntry key={user.id} user={user} />)}
+                            {selectedArea.chargers.map((charger) => <ChargerEntry key={charger.id} charger={charger} />)}
+                            {selectedArea.stations.map((station) => <StationEntry key={station.id} station={station} />)}
+                        </div>
+                    </div>
+                </DashboardBox>
+            )}
         </div>
       </div>
       <Footer />

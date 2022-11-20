@@ -1,16 +1,8 @@
 import React from "react"
 
 import { USER_LIST_ENDPOINT } from "./consts"
-import { ListItem, MapItem } from "./definitions"
+import { ListItem, MapItem, User } from "./definitions"
 import { loadData } from "./utils"
-
-type User = {
-  id: string
-  name: string
-  address: string
-  lat: number
-  lng: number
-}
 
 export function useUsers(): User[] | null {
   const [users, setUsers] = React.useState<User[] | null>(null)
