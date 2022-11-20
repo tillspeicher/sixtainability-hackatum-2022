@@ -1,9 +1,10 @@
 import mapboxgl, { Map } from "mapbox-gl"
-import { useEffect, useRef, useState, RefObject } from "react"
+import { useEffect, useRef, useState, RefObject, FC } from "react"
 
 import polygon from "~/constants/polygons.json"
 
-import { MapItem } from "~/controllers/definitions"
+import { MapItem, ItemType } from "~/controllers/definitions"
+import { ItemIcon } from "~/components/ItemIcon"
 
 import type { MapProps } from "./types"
 
@@ -182,14 +183,18 @@ export function MapBox({ prop = "Map", users, chargers, stations }: MapProps) {
     )
   })
 
-  useMarkers(map, users)
-  useMarkers(map, chargers)
-  useMarkers(map, stations)
+  useMarkers(map, users, "user")
+  useMarkers(map, chargers, "charger")
+  useMarkers(map, stations, "station")
 
-  return <div ref={mapContainer} id="map" className="map-container" />
+    return <div className="w-full h-full">
+        {/* <div className="w-15, h-15 bg-red absolute" id="testid"/> */}
+        {/* {users.map(user => <IconMarker key={user.id} itemType="user" id={user.id} />)} */}
+        <div ref={mapContainer} id="map" className="map-container" />
+    </div>
 }
 
-function useMarkers(map: RefObject<mapboxgl.Map>, items: MapItem[]) {
+function useMarkers(map: RefObject<mapboxgl.Map>, items: MapItem[], itemType: ItemType) {
   const [markers, setMarkers] = useState<mapboxgl.Marker[]>([])
   useEffect(() => {
     if (map.current == null) return
@@ -198,9 +203,23 @@ function useMarkers(map: RefObject<mapboxgl.Map>, items: MapItem[]) {
       marker.remove()
     })
 
+    let color: string
+    if (itemType === "user") {
+        color = "#bb0000"
+    } else if (itemType === "charger") {
+        color = "#f4e61f"
+    } else {
+        color = "#ff5f00"
+    }
     const newMarkers = []
     items.forEach((item) => {
-      const marker = new mapboxgl.Marker()
+        // const markerElement = document.getElementById(`${itemType}-${item.id}`)
+        // const markerElement = document.getElementById("testid")
+      const marker = new mapboxgl.Marker({
+          // element: markerElement,
+          color: color,
+          scale: 0.7,
+      })
         .setLngLat([item.lng, item.lat])
         .addTo(map.current)
       newMarkers.push(marker)
@@ -240,4 +259,18 @@ function createGroupingTable(
   })
 
   console.log(groupingTable)
+}
+
+
+type IconMarkerProps = {
+    itemType: ItemType
+    id: string
+}
+
+const IconMarker: FC<IconMarkerProps> = ({ itemType, id }) => {
+    return (
+        <div id={`${itemType}-${id}`} className="absolute">
+            <ItemIcon itemType />
+        </div>
+    )
 }
