@@ -3,6 +3,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom"
 import { ErrorPage } from "~/components/ErrorPage"
 import { Base } from "~/layouts/Base"
 import { Home } from "~/pages/Home"
+import { Project } from "~/pages/Project"
 import { Team } from "~/pages/Team"
 
 const router = createBrowserRouter([
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
       {
         path: "/team",
         element: <Team />,
+      },
+      {
+        path: "/project",
+        element: <Project />,
       },
     ],
   },

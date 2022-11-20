@@ -1,15 +1,22 @@
 import Switch from "@mui/material/Switch"
 import React, { ReactNode } from "react"
+<<<<<<< HEAD
 
 import { Footer } from "~/components/Footer"
 import { ItemIcon } from "~/components/ItemIcon"
 import { ItemType, AreaInfo } from "~/controllers/definitions"
 import { UserEntry, ChargerEntry, StationEntry } from "~/components/ItemEntries"
 
+=======
+>>>>>>> d90a75696dce60e8ba6652edada4c9cfd7688d0e
 import { DashboardBox } from "../DashboardBox"
 import { Map } from "../Map"
 
 import type { DashboardProps } from "./types"
+<<<<<<< HEAD
+=======
+import {Footer} from "~/components/Footer";
+>>>>>>> d90a75696dce60e8ba6652edada4c9cfd7688d0e
 
 import {
   chargersToListItems,
