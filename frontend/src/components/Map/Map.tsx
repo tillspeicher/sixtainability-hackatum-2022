@@ -17,7 +17,14 @@ let min_long = 180
 let min_lat = 180
 let groupingTable: {
   [key: string]: {
-    [key: string]: number
+    numCharger: number
+    chargers: []
+    users: []
+    stations: []
+  }
+  minMax?: {
+    min: number
+    max: number
   }
 } = null
 
@@ -158,11 +165,13 @@ export function MapBox({
         // When a click event occurs on a feature in the states layer,
         // open a popup at the location of the click, with description
         // HTML from the click event's properties.
-        map.current.on("click", `${e.properties.name}-layer`, (e: any) => {
+        map.current.on("click", `${e.properties.name}-layer`, (x: any) => {
           new mapboxgl.Popup()
-            .setLngLat(e.lngLat)
-            .setHTML(e.features[0].properties.name)
+            .setLngLat(x.lngLat)
+            .setHTML(x.features[0].properties.name)
             .addTo(map.current)
+
+          console.log(groupingTable[x.features[0].properties.name])
         })
       })
 
@@ -209,14 +218,20 @@ export function MapBox({
     createGroupingTable(allItems, geoJSON)
   }
 
-    return <div className="w-full h-full">
-        {/* <div className="w-15, h-15 bg-red absolute" id="testid"/> */}
-        {/* {users.map(user => <IconMarker key={user.id} itemType="user" id={user.id} />)} */}
-        <div ref={mapContainer} id="map" className="map-container" />
+  return (
+    <div className="w-full h-full">
+      {/* <div className="w-15, h-15 bg-red absolute" id="testid"/> */}
+      {/* {users.map(user => <IconMarker key={user.id} itemType="user" id={user.id} />)} */}
+      <div ref={mapContainer} id="map" className="map-container" />
     </div>
+  )
 }
 
-function useMarkers(map: RefObject<mapboxgl.Map>, items: MapItem[], itemType: ItemType) {
+function useMarkers(
+  map: RefObject<mapboxgl.Map>,
+  items: MapItem[],
+  itemType: ItemType
+) {
   const [markers, setMarkers] = useState<mapboxgl.Marker[]>([])
   useEffect(() => {
     if (map.current == null) return
@@ -227,20 +242,20 @@ function useMarkers(map: RefObject<mapboxgl.Map>, items: MapItem[], itemType: It
 
     let color: string
     if (itemType === "user") {
-        color = "#bb0000"
+      color = "#bb0000"
     } else if (itemType === "charger") {
-        color = "#f4e61f"
+      color = "#f4e61f"
     } else {
-        color = "#ff5f00"
+      color = "#ff5f00"
     }
     const newMarkers = []
     items.forEach((item) => {
-        // const markerElement = document.getElementById(`${itemType}-${item.id}`)
-        // const markerElement = document.getElementById("testid")
+      // const markerElement = document.getElementById(`${itemType}-${item.id}`)
+      // const markerElement = document.getElementById("testid")
       const marker = new mapboxgl.Marker({
-          // element: markerElement,
-          color: color,
-          scale: 0.7,
+        // element: markerElement,
+        color: color,
+        scale: 0.7,
       })
         .setLngLat([item.lng, item.lat])
         .addTo(map.current)
@@ -254,23 +269,43 @@ function createGroupingTable(allItems: any, geoJSON: any) {
   groupingTable = {}
   // initialize table with 0 chargers
   geoJSON.features.forEach((area: any) => {
-    groupingTable[area.properties.name] = { numCharger: 0 }
+    groupingTable[area.properties.name] = {
+      numCharger: 0,
+      chargers: [],
+      users: [],
+      stations: [],
+    }
   })
 
   let min = 100
   let max = 0
 
-  allItems.chargers.forEach((charger: any) => {
-    geoJSON.features.forEach((area: any) => {
+  geoJSON.features.forEach((area: any) => {
+    allItems.chargers.forEach((charger: any) => {
       if (contains(area.geometry.coordinates, charger.lat, charger.lng)) {
         if (groupingTable[area.properties.name] !== undefined) {
           // increment count of number of chargers
           groupingTable[area.properties.name].numCharger += 1
+          groupingTable[area.properties.name].chargers.push(charger)
 
           // update max
           if (max < groupingTable[area.properties.name].numCharger) {
             max = groupingTable[area.properties.name].numCharger
           }
+        }
+      }
+    })
+    allItems.users.forEach((user: any) => {
+      if (contains(area.geometry.coordinates, user.lat, user.lng)) {
+        if (groupingTable[area.properties.name] !== undefined) {
+          groupingTable[area.properties.name].users.push(user)
+        }
+      }
+    })
+    allItems.stations.forEach((station: any) => {
+      if (contains(area.geometry.coordinates, station.lat, station.lng)) {
+        if (groupingTable[area.properties.name] !== undefined) {
+          groupingTable[area.properties.name].stations.push(station)
         }
       }
     })
@@ -283,8 +318,8 @@ function createGroupingTable(allItems: any, geoJSON: any) {
     }
   }
 
-  console.log(groupingTable)
-  console.log("min: " + min + ", max: " + max)
+  // console.log(groupingTable)
+  // console.log("min: " + min + ", max: " + max)
 
   groupingTable["minMax"] = {
     min: min,
@@ -292,16 +327,15 @@ function createGroupingTable(allItems: any, geoJSON: any) {
   }
 }
 
-
 type IconMarkerProps = {
-    itemType: ItemType
-    id: string
+  itemType: ItemType
+  id: string
 }
 
 const IconMarker: FC<IconMarkerProps> = ({ itemType, id }) => {
-    return (
-        <div id={`${itemType}-${id}`} className="absolute">
-            <ItemIcon itemType />
-        </div>
-    )
+  return (
+    <div id={`${itemType}-${id}`} className="absolute">
+      <ItemIcon itemType />
+    </div>
+  )
 }

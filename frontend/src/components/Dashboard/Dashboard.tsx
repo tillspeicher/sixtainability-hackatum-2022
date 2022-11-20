@@ -85,13 +85,11 @@ export function Dashboard({ prop = "Dashboard" }: DashboardProps) {
         </div>
         <div className="h-full w-3/12 px-1.5">
           <DashboardBox title={"Info"}>
-              <div className="w-full h-full overflow-y-auto">
-                <div className="w-full">
-                    {users &&
-                        users.map((user) => (
-                        <UserEntry key={user.id} user={user} />
-                    ))}
-                </div>
+            <div className="w-full h-full overflow-y-auto">
+              <div className="w-full">
+                {users &&
+                  users.map((user) => <UserEntry key={user.id} user={user} />)}
+              </div>
             </div>
           </DashboardBox>
         </div>
