@@ -37,14 +37,17 @@ export function Dashboard({ prop = "Dashboard" }: DashboardProps) {
   const [showStations, setShowStations] = React.useState(false)
   const [showAreas, setShowAreas] = React.useState(false)
 
-    const [selectedArea, setSelectedArea] = React.useState<AreaInfo | null>(null)
-    const onChangeUser = React.useCallback((userId: string, promote: boolean) => {
-        if (!users) return
-        const selectedUser = users.find(user => user.id == userId)
-        if (!selectedUser) return
-        selectedUser.isPromoted = promote
-        setUserAsCharger(selectedArea?.areaName ?? "", selectedUser, promote)
-    }, [users, setUserAsCharger, selectedArea])
+  const [selectedArea, setSelectedArea] = React.useState<AreaInfo | null>(null)
+  const onChangeUser = React.useCallback(
+    (userId: string, promote: boolean) => {
+      if (!users) return
+      const selectedUser = users.find((user) => user.id == userId)
+      if (!selectedUser) return
+      selectedUser.isPromoted = promote
+      setUserAsCharger(selectedArea?.areaName ?? "", selectedUser, promote)
+    },
+    [users, setUserAsCharger, selectedArea]
+  )
 
   return (
     <div className="w-full h-screen bg-black flex flex-col overflow-hidden">
