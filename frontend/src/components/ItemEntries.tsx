@@ -20,22 +20,12 @@ export const UserEntry: React.FC<UserEntryProps> = ({ user, onChangeUser }) => {
       <BaseItemEntry itemType={user.isPromoted ? "charger" : "user"} title={user.name}>
       <div className="flex w-full flex-col content-center justify-center">
         <p className="text-gray-200 text-md h-full text-bottom">
-          {user.address}
+            {user.address}
         </p>
-        <div
-          className="flex w-1/2 h-12 m-1 bg-green-500 content-center justify-center"
-          onClick={() => onChangeUser(user.id, true)}
-        >
-            <div className="flex w-full flex-col content-center justify-center">
-                <p className="text-gray-200 text-md h-full text-bottom">
-                    {user.address}
-                </p>
-                <div className="flex w-1/2 h-12 m-1 bg-green-500 content-center justify-center cursor-pointer"
-                    onClick={() => onChangeUser(user.id, true)}>
-                    <FontAwesomeIcon icon={faThumbsUp} className={"fa-2xl"} color={BUTTON_COL}
-                    />
-                </div>
-            </div>
+        <div className="flex h-18 w-1/2 h-12 m-1 bg-green-500 content-center justify-center cursor-pointer"
+            onClick={() => onChangeUser(user.id, true)}>
+            <FontAwesomeIcon icon={faThumbsUp} className={"fa-2xl"} color={BUTTON_COL}
+            />
         </div>
     </div>
     </BaseItemEntry>
