@@ -29,7 +29,7 @@ import {
 
 export function Dashboard({ prop = "Dashboard" }: DashboardProps) {
   const users = useUsers()
-  const chargers = useChargers()
+  const { chargers, setUserAsCharger } = useChargers()
   const stations = useStations()
 
   const [showUsers, setShowUsers] = React.useState(false)
@@ -38,6 +38,13 @@ export function Dashboard({ prop = "Dashboard" }: DashboardProps) {
   const [showAreas, setShowAreas] = React.useState(false)
 
     const [selectedArea, setSelectedArea] = React.useState<AreaInfo | null>(null)
+    const onChangeUser = React.useCallback((userId: string, promote: boolean) => {
+        if (!users) return
+        const selectedUser = users.find(user => user.id == userId)
+        if (!selectedUser) return
+        selectedUser.isPromoted = promote
+        setUserAsCharger(selectedUser, promote)
+    }, [users, setUserAsCharger])
 
   return (
     <div className="w-full h-screen bg-black flex flex-col overflow-hidden">
@@ -91,7 +98,11 @@ export function Dashboard({ prop = "Dashboard" }: DashboardProps) {
                 <DashboardBox title={selectedArea.areaName}>
                     <div className="w-full h-full overflow-y-auto">
                         <div className="w-full">
-                            {selectedArea.users.map((user) => <UserEntry key={user.id} user={user} />)}
+                            {selectedArea.users.map((user) => <UserEntry
+                                key={user.id}
+                                user={user}
+                                onChangeUser={onChangeUser}
+                            />)}
                             {selectedArea.chargers.map((charger) => <ChargerEntry key={charger.id} charger={charger} />)}
                             {selectedArea.stations.map((station) => <StationEntry key={station.id} station={station} />)}
                         </div>

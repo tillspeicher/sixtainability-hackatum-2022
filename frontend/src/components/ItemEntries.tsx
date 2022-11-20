@@ -5,10 +5,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faThumbsUp, faThumbsDown } from '@fortawesome/free-solid-svg-icons'
 
-import { User } from "~/controllers/users"
-import { Charger } from "~/controllers/chargers"
-import { Station } from "~/controllers/stations"
-import { ItemType } from "~/controllers/definitions"
+import { ItemType, User, Charger, Station } from "~/controllers/definitions"
 import { ItemIcon } from "~/components/ItemIcon"
 
 
@@ -29,9 +26,10 @@ export const UserEntry: React.FC<UserEntryProps> = ({ user, onChangeUser }) => {
                 <p className="text-gray-200 text-md h-full text-bottom">
                     {user.address}
                 </p>
-                <div className="flex w-1/2 h-12 m-1 bg-green-500 content-center justify-center"
+                <div className="flex w-1/2 h-12 m-1 bg-green-500 content-center justify-center cursor-pointer"
                     onClick={() => onChangeUser(user.id, true)}>
-                    <FontAwesomeIcon icon={faThumbsUp} className={"fa-2xl"} color={BUTTON_COL}/>
+                    <FontAwesomeIcon icon={faThumbsUp} className={"fa-2xl"} color={BUTTON_COL}
+                />
                 </div>
             </div>
         </BaseItemEntry>

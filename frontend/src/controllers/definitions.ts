@@ -18,6 +18,7 @@ export type User = {
   address: string
   lat: number
   lng: number
+    isPromoted?: boolean
 }
 
 export type Charger = {
@@ -26,8 +27,9 @@ export type Charger = {
     vicinity: string
     lat: number
     lng: number
-    rating: number
-    user_ratings_total: number
+    rating?: number
+    user_ratings_total?: number
+    belongsToUser?: string
 }
 
 export type Station = {
