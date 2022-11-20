@@ -12,8 +12,8 @@ return (
             <div className="w-full flex justify-between content-center mx-2">
               <img className="h-14" src={sixtainabilityLogo} alt={"Logo"} />
               <Box sx={{ display: 'flex', alignItems: 'right', textAlign: 'center', paddingTop:"1rem" }}>
-                <Link sx={{ minWidth: 100, color:"white"}} href={"#"}>Home</Link>
-                <Link sx={{ minWidth: 100, color:"white"}} href={"#"}>Project</Link>
+                <Link sx={{ minWidth: 100, color:"white"}} href={"/home#"}>Home</Link>
+                <Link sx={{ minWidth: 100, color:"white"}} href={"/project"}>Project</Link>
                 <Link sx={{ minWidth: 100, color:"white"}} href={"/team"}>Team</Link>
               </Box>
             </div>

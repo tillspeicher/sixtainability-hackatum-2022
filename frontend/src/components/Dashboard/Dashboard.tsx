@@ -1,11 +1,9 @@
 import Switch from "@mui/material/Switch"
 import React, { ReactNode } from "react"
-
 import { DashboardBox } from "../DashboardBox"
 import { Map } from "../Map"
 import type { DashboardProps } from "./types"
 import {Footer} from "~/components/Footer";
-import sixtainabilityLogo from "~/assets/sixtainability.png"
 
 import {
   chargersToListItems,
