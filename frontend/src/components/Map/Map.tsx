@@ -369,7 +369,6 @@ function createGroupingTable(allItems: any, geoJSON: any) {
  * @return {boolean} true if (lng, lat) is in bounds
  */
 function contains(bounds: string | any[], lat: any, lng: any): boolean {
-  //https://rosettacode.org/wiki/Ray-casting_algorithm
   let count = 0
   for (let b = 0; b < bounds[0].length; b++) {
     const vertex1 = bounds[0][b]
