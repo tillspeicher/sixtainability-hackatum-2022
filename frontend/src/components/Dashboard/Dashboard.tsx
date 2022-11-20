@@ -114,7 +114,7 @@ export function Dashboard({ prop = "Dashboard" }: DashboardProps) {
           )}
         </div>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   )
 }

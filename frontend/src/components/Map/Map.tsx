@@ -35,7 +35,7 @@ export function MapBox({
   stations,
   allItems,
   showAreas,
-    onAreaSelected,
+  onAreaSelected,
 }: MapProps) {
   const mapContainer = useRef(null)
   const map = useRef(null)
@@ -136,13 +136,49 @@ export function MapBox({
             .setHTML(x.features[0].properties.name)
             .addTo(map.current)
 
-            const areaName = x.features[0].properties.name
-            const areaData = groupingTable[areaName]
+          const areaName = x.features[0].properties.name
+          const areaData = groupingTable[areaName]
           console.log(areaData)
-            onAreaSelected({
-                areaName: areaName,
-                ...areaData,
-            })
+          onAreaSelected({
+            areaName: areaName,
+            ...areaData,
+          })
+
+          const easingFn = easingFunctions.easeOutQuint
+          const duration = 3000
+          const animate = true
+          const center = [x.lngLat.lng, x.lngLat.lat]
+
+          const animationOptions = {
+            duration: duration,
+            easing: easingFn,
+            animate: animate,
+            center: center,
+            essential: true, // animation will happen even if user has `prefers-reduced-motion` setting on
+          }
+
+          // Create a random location to fly to by offsetting the map's
+          // initial center point by up to 10 degrees.
+          // const center = [
+          //   -95 + (Math.random() - 0.5) * 20,
+          //   40 + (Math.random() - 0.5) * 20,
+          // ]
+
+          // merge animationOptions with other flyTo options
+          // let center = [x.lngLat.lng, x.lngLat.lat]
+          animationOptions.center = center
+
+          map.current.flyTo(animationOptions)
+
+          map.current.getSource("center").setData({
+            type: "Point",
+            coordinates: center,
+          })
+          map.current.setLayoutProperty(
+            "center",
+            "text-field",
+            `Center: [${center[0].toFixed(1)}, ${center[1].toFixed(1)}`
+          )
         })
       })
 
@@ -195,6 +231,38 @@ export function MapBox({
       <div ref={mapContainer} id="map" className="map-container" />
     </div>
   )
+}
+
+const easingFunctions = {
+  // start slow and gradually increase speed
+  easeInCubic: function (t) {
+    return t * t * t
+  },
+  // start fast with a long, slow wind-down
+  easeOutQuint: function (t) {
+    return 1 - Math.pow(1 - t, 5)
+  },
+  // slow start and finish with fast middle
+  easeInOutCirc: function (t) {
+    return t < 0.5
+      ? (1 - Math.sqrt(1 - Math.pow(2 * t, 2))) / 2
+      : (Math.sqrt(1 - Math.pow(-2 * t + 2, 2)) + 1) / 2
+  },
+  // fast start with a "bounce" at the end
+  easeOutBounce: function (t) {
+    const n1 = 7.5625
+    const d1 = 2.75
+
+    if (t < 1 / d1) {
+      return n1 * t * t
+    } else if (t < 2 / d1) {
+      return n1 * (t -= 1.5 / d1) * t + 0.75
+    } else if (t < 2.5 / d1) {
+      return n1 * (t -= 2.25 / d1) * t + 0.9375
+    } else {
+      return n1 * (t -= 2.625 / d1) * t + 0.984375
+    }
+  },
 }
 
 function useMarkers(
