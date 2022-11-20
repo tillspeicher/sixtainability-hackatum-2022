@@ -1,22 +1,15 @@
 import Switch from "@mui/material/Switch"
 import React, { ReactNode } from "react"
-<<<<<<< HEAD
 
 import { Footer } from "~/components/Footer"
 import { ItemIcon } from "~/components/ItemIcon"
 import { ItemType, AreaInfo } from "~/controllers/definitions"
 import { UserEntry, ChargerEntry, StationEntry } from "~/components/ItemEntries"
 
-=======
->>>>>>> d90a75696dce60e8ba6652edada4c9cfd7688d0e
 import { DashboardBox } from "../DashboardBox"
 import { Map } from "../Map"
 
 import type { DashboardProps } from "./types"
-<<<<<<< HEAD
-=======
-import {Footer} from "~/components/Footer";
->>>>>>> d90a75696dce60e8ba6652edada4c9cfd7688d0e
 
 import {
   chargersToListItems,
@@ -37,7 +30,7 @@ import {
 export function Dashboard({ prop = "Dashboard" }: DashboardProps) {
   const users = useUsers()
   const { chargers, userChargers, setUserAsCharger } = useChargers()
-    console.log("user chargers:", userChargers)
+  console.log("user chargers:", userChargers)
   const stations = useStations()
 
   const [showUsers, setShowUsers] = React.useState(false)
@@ -45,22 +38,25 @@ export function Dashboard({ prop = "Dashboard" }: DashboardProps) {
   const [showStations, setShowStations] = React.useState(false)
   const [showAreas, setShowAreas] = React.useState(false)
 
-    const [selectedArea, setSelectedArea] = React.useState<AreaInfo | null>(null)
-    const onChangeUser = React.useCallback((userId: string, promote: boolean) => {
-        if (!users) return
-        const selectedUser = users.find(user => user.id == userId)
-        if (!selectedUser) return
-        selectedUser.isPromoted = promote
-        setUserAsCharger(selectedArea?.areaName ?? "", selectedUser, promote)
-    }, [users, setUserAsCharger, selectedArea])
+  const [selectedArea, setSelectedArea] = React.useState<AreaInfo | null>(null)
+  const onChangeUser = React.useCallback(
+    (userId: string, promote: boolean) => {
+      if (!users) return
+      const selectedUser = users.find((user) => user.id == userId)
+      if (!selectedUser) return
+      selectedUser.isPromoted = promote
+      setUserAsCharger(selectedArea?.areaName ?? "", selectedUser, promote)
+    },
+    [users, setUserAsCharger, selectedArea]
+  )
 
-    const getAllChargers = React.useCallback((chargers: Charger[]) => ([
-        ...(chargers ?? []),
-        ...(selectedArea
-            ? (userChargers.get(selectedArea.areaName) ?? [])
-            : []
-        )
-    ]), [selectedArea, userChargers])
+  const getAllChargers = React.useCallback(
+    (chargers: Charger[]) => [
+      ...(chargers ?? []),
+      ...(selectedArea ? userChargers.get(selectedArea.areaName) ?? [] : []),
+    ],
+    [selectedArea, userChargers]
+  )
 
   return (
     <div className="w-full h-screen bg-black flex flex-col overflow-hidden">
@@ -97,7 +93,9 @@ export function Dashboard({ prop = "Dashboard" }: DashboardProps) {
           <DashboardBox>
             <Map
               users={usersToMapItems(showUsers ? users ?? [] : [])}
-              chargers={chargersToMapItems(showChargers ? getAllChargers(chargers ?? []) : [])}
+              chargers={chargersToMapItems(
+                showChargers ? getAllChargers(chargers ?? []) : []
+              )}
               stations={stationsToMapItems(showStations ? stations ?? [] : [])}
               allItems={{
                 users: users,
@@ -110,22 +108,28 @@ export function Dashboard({ prop = "Dashboard" }: DashboardProps) {
           </DashboardBox>
         </div>
         <div className="h-full w-3/12 px-1.5">
-            {selectedArea != null && (
-                <DashboardBox title={selectedArea.areaName}>
-                    <div className="w-full h-full overflow-y-auto">
-                        <div className="w-full">
-                            {selectedArea.users.map((user) => <UserEntry
-                                key={user.id}
-                                user={user}
-                                onChangeUser={onChangeUser}
-                            />)}
-                            {/* {getAllChargers(selectedArea.chargers).map((charger) => <ChargerEntry key={charger.id} charger={charger} />)} */}
-                            {selectedArea.chargers.map((charger) => <ChargerEntry key={charger.id} charger={charger} />)}
-                            {selectedArea.stations.map((station) => <StationEntry key={station.id} station={station} />)}
-                        </div>
-                    </div>
-                </DashboardBox>
-            )}
+          {selectedArea != null && (
+            <DashboardBox title={selectedArea.areaName}>
+              <div className="w-full h-full overflow-y-auto">
+                <div className="w-full">
+                  {selectedArea.users.map((user) => (
+                    <UserEntry
+                      key={user.id}
+                      user={user}
+                      onChangeUser={onChangeUser}
+                    />
+                  ))}
+                  {/* {getAllChargers(selectedArea.chargers).map((charger) => <ChargerEntry key={charger.id} charger={charger} />)} */}
+                  {selectedArea.chargers.map((charger) => (
+                    <ChargerEntry key={charger.id} charger={charger} />
+                  ))}
+                  {selectedArea.stations.map((station) => (
+                    <StationEntry key={station.id} station={station} />
+                  ))}
+                </div>
+              </div>
+            </DashboardBox>
+          )}
         </div>
       </div>
       {/* <Footer /> */}
