@@ -17,7 +17,7 @@ const BUTTON_COL = "white"
 
 export const UserEntry: React.FC<UserEntryProps> = ({ user, onChangeUser }) => {
   return (
-    <BaseItemEntry itemType="user" title={user.name}>
+      <BaseItemEntry itemType={user.isPromoted ? "charger" : "user"} title={user.name}>
       <div className="flex w-full flex-col content-center justify-center">
         <p className="text-gray-200 text-md h-full text-bottom">
           {user.address}

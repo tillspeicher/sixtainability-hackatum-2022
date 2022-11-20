@@ -6,13 +6,12 @@ import { ListItem, MapItem, Charger, User } from "./definitions"
 
 type ChargerState = {
     chargers: Charger[] | null
-    userChargers: Map<string, Charger[]>
     setUserAsCharger: (areaName: string, user: User, isCharger: boolean) => void
 }
 
 export function useChargers(): ChargerState {
     const [chargers, setChargers] = React.useState<Charger[] | null>(null)
-    const [userChargers, setUserChargers] = React.useState<Map<string, Charger[]>>(new Map())
+    const [userChargers, setUserChargers] = React.useState<Charger[]>([])
     React.useEffect(() => {
         if (chargers != null) return
         loadData(CHARGER_LIST_ENDPOINT)
@@ -21,33 +20,29 @@ export function useChargers(): ChargerState {
 
     const setUserAsCharger = React.useCallback((areaName: string, user: User, isPromoted: boolean) => {
         console.log("selecting user:", user)
-        let areaChargers = userChargers.get(areaName)
-        if (areaChargers == undefined) {
-            areaChargers = []
-        }
         if (isPromoted) {
-            areaChargers.push({
-                id: user.id,
-                name: `Juice by ${user.name}`,
-                vicinity: user.address,
-                lat: user.lat,
-                lng: user.lng,
-                belongsToUser: user.id,
+            setUserChargers(userChargers => {
+                userChargers.push({
+                    id: user.id,
+                    name: `Juice by ${user.name}`,
+                    vicinity: user.address,
+                    lat: user.lat,
+                    lng: user.lng,
+                    belongsToUser: user.id,
+                })
+                return userChargers
             })
         } else {
-            areaChargers = areaChargers.filter(userCharger=> (
-                userCharger.belongsToUser != user.id
-            ))
+            setUserChargers(userChargers => {
+                return userChargers.filter(charger => (
+                    charger.belongsToUser != user.id
+                ))
+            })
         }
-        setUserChargers(userChargers => {
-            userChargers.set(areaName, areaChargers)
-            return userChargers
-        })
-    }, [userChargers])
+    }, [])
 
     return React.useMemo<ChargerState>(() => ({
-        chargers: chargers,
-        userChargers,
+        chargers: chargers != null ? [...chargers, ...userChargers] : null,
         setUserAsCharger,
     }), [chargers, userChargers, setUserAsCharger])
 }

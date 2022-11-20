@@ -29,8 +29,7 @@ import {
 
 export function Dashboard({ prop = "Dashboard" }: DashboardProps) {
   const users = useUsers()
-  const { chargers, userChargers, setUserAsCharger } = useChargers()
-    console.log("user chargers:", userChargers)
+  const { chargers, setUserAsCharger } = useChargers()
   const stations = useStations()
 
   const [showUsers, setShowUsers] = React.useState(false)
@@ -46,14 +45,6 @@ export function Dashboard({ prop = "Dashboard" }: DashboardProps) {
         selectedUser.isPromoted = promote
         setUserAsCharger(selectedArea?.areaName ?? "", selectedUser, promote)
     }, [users, setUserAsCharger, selectedArea])
-
-    const getAllChargers = React.useCallback((chargers: Charger[]) => ([
-        ...(chargers ?? []),
-        ...(selectedArea
-            ? (userChargers.get(selectedArea.areaName) ?? [])
-            : []
-        )
-    ]), [selectedArea, userChargers])
 
   return (
     <div className="w-full h-screen bg-black flex flex-col overflow-hidden">
@@ -90,7 +81,7 @@ export function Dashboard({ prop = "Dashboard" }: DashboardProps) {
           <DashboardBox>
             <Map
               users={usersToMapItems(showUsers ? users ?? [] : [])}
-              chargers={chargersToMapItems(showChargers ? getAllChargers(chargers ?? []) : [])}
+              chargers={chargersToMapItems(showChargers ? (chargers ?? []) : [])}
               stations={stationsToMapItems(showStations ? stations ?? [] : [])}
               allItems={{
                 users: users,
@@ -113,7 +104,10 @@ export function Dashboard({ prop = "Dashboard" }: DashboardProps) {
                                 onChangeUser={onChangeUser}
                             />)}
                             {/* {getAllChargers(selectedArea.chargers).map((charger) => <ChargerEntry key={charger.id} charger={charger} />)} */}
-                            {selectedArea.chargers.map((charger) => <ChargerEntry key={charger.id} charger={charger} />)}
+                            {selectedArea.chargers
+                                .filter(charger => charger.belongsToUser == null)
+                                .map((charger) => <ChargerEntry key={charger.id} charger={charger} />)
+                            }
                             {selectedArea.stations.map((station) => <StationEntry key={station.id} station={station} />)}
                         </div>
                     </div>
