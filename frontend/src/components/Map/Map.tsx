@@ -19,7 +19,7 @@ let groupingTable: {
   [key: string]: {
     [key: string]: number
   }
-} = {}
+} = null
 
 // function intersect(latLng: any, minMax: any) {
 //   console.log(latLng)
@@ -44,7 +44,7 @@ function contains(bounds: string | any[], lat: any, lng: any): boolean {
     const vertex2 = bounds[0][(b + 1) % bounds[0].length]
     if (west(vertex1, vertex2, lng, lat)) ++count
   }
-  return count % 2 === 0
+  return count % 2 === 1
 
   /**
    * @return {boolean} true if (x,y) is west of the line segment connecting A and B
@@ -69,7 +69,14 @@ function contains(bounds: string | any[], lat: any, lng: any): boolean {
   }
 }
 
-export function MapBox({ prop = "Map", users, chargers, stations }: MapProps) {
+export function MapBox({
+  prop = "Map",
+  users,
+  chargers,
+  stations,
+  allItems,
+  showAreas,
+}: MapProps) {
   const mapContainer = useRef(null)
   const map = useRef(null)
   const [lng, setLng] = useState(11.576123)
@@ -78,39 +85,41 @@ export function MapBox({ prop = "Map", users, chargers, stations }: MapProps) {
 
   const geoJSON: any = { type: "FeatureCollection", features: [] }
 
-  for (const x in polygon as any) {
-    const long = polygon[x][0][0]
-    const lat = polygon[x][0][1]
+  if (geoJSON.features.length === 0) {
+    for (const x in polygon as any) {
+      const long = polygon[x][0][0]
+      const lat = polygon[x][0][1]
 
-    if (long > max_long) {
-      max_long = long
-    }
-    if (long < min_long) {
-      min_long = long
-    }
-    if (lat > max_lat) {
-      max_lat = lat
-    }
-    if (lat < min_lat) {
-      min_lat = lat
-    }
+      if (long > max_long) {
+        max_long = long
+      }
+      if (long < min_long) {
+        min_long = long
+      }
+      if (lat > max_lat) {
+        max_lat = lat
+      }
+      if (lat < min_lat) {
+        min_lat = lat
+      }
 
-    geoJSON.features.push({
-      type: "Feature",
-      properties: {
-        name: x,
-        minMax: {
-          min_lat: min_lat,
-          max_lat: max_lat,
-          min_long: min_long,
-          max_long: max_long,
+      geoJSON.features.push({
+        type: "Feature",
+        properties: {
+          name: x,
+          minMax: {
+            min_lat: min_lat,
+            max_lat: max_lat,
+            min_long: min_long,
+            max_long: max_long,
+          },
         },
-      },
-      geometry: {
-        type: "Polygon",
-        coordinates: [polygon[x]],
-      },
-    })
+        geometry: {
+          type: "Polygon",
+          coordinates: [polygon[x]],
+        },
+      })
+    }
   }
 
   useEffect(() => {
@@ -127,44 +136,48 @@ export function MapBox({ prop = "Map", users, chargers, stations }: MapProps) {
       () => {
         const x = "Munich"
 
-        // Add a source for the state polygons.
-        // for (const x in polygon as any) {
-        map.current.addSource(`${x}`, {
-          type: "geojson",
-          data: geoJSON,
-        })
-
         // Add a layer showing the state polygons.
-        map.current.addLayer({
-          id: `${x}-layer`,
-          type: "fill",
-          source: `${x}`,
-          paint: {
-            "fill-color": "rgba(200, 100, 240, 0.2)",
-            "fill-outline-color": "rgba(200, 100, 240, 1)",
-          },
-        })
+        geoJSON.features.forEach((e: any) => {
+          const gradient =
+            (groupingTable[e.properties.name].numCharger -
+              groupingTable.minMax.min) /
+            (groupingTable.minMax.max - groupingTable.minMax.min)
 
-        // When a click event occurs on a feature in the states layer,
-        // open a popup at the location of the click, with description
-        // HTML from the click event's properties.
-        map.current.on("click", `${x}-layer`, (e: any) => {
-          new mapboxgl.Popup()
-            .setLngLat(e.lngLat)
-            .setHTML(e.features[0].properties.name)
-            .addTo(map.current)
+          const blue = 0
+          const green = Math.round(gradient * 255)
+          const red = Math.round(
+            (-3 * (gradient * gradient) + 2.5 * gradient + 0.5) * 255
+          )
 
-          // const t = contains(
-          //   [polygon["Altstadt-Lehel"]],
-          //   // e.features[0].geometry.coordinates,
-          //   e.lngLat.lat,
-          //   e.lngLat.lng
-          // )
-          // if (t == 0) {
-          //   console.log("inside")
-          // } else {
-          //   console.log("outside")
-          // }
+          // Add a source for the state polygons.
+          // for (const x in polygon as any) {
+          map.current.addSource(`${e.properties.name}-source`, {
+            type: "geojson",
+            data: e,
+          })
+          map.current.addLayer({
+            id: `${e.properties.name}-layer`,
+            type: "fill",
+            source: `${e.properties.name}-source`,
+            layout: {
+              // Make the layer visible by default.
+              visibility: showAreas ? "visible" : "none",
+            },
+            paint: {
+              "fill-color": `rgba(${red}, ${green}, ${blue}, 0.2)`,
+              "fill-outline-color": "rgba(244, 129, 30, 1)",
+            },
+          })
+
+          // When a click event occurs on a feature in the states layer,
+          // open a popup at the location of the click, with description
+          // HTML from the click event's properties.
+          map.current.on("click", `${e.properties.name}-layer`, (e: any) => {
+            new mapboxgl.Popup()
+              .setLngLat(e.lngLat)
+              .setHTML(e.features[0].properties.name)
+              .addTo(map.current)
+          })
         })
 
         // Change the cursor to a pointer when
@@ -186,6 +199,15 @@ export function MapBox({ prop = "Map", users, chargers, stations }: MapProps) {
   useMarkers(map, users, "user")
   useMarkers(map, chargers, "charger")
   useMarkers(map, stations, "station")
+
+  if (
+    !groupingTable &&
+    allItems.users &&
+    allItems.chargers &&
+    allItems.stations
+  ) {
+    createGroupingTable(allItems, geoJSON)
+  }
 
     return <div className="w-full h-full">
         {/* <div className="w-15, h-15 bg-red absolute" id="testid"/> */}
@@ -228,12 +250,7 @@ function useMarkers(map: RefObject<mapboxgl.Map>, items: MapItem[], itemType: It
   }, [items])
 }
 
-function createGroupingTable(
-  chargers: any,
-  users: any,
-  stations: any,
-  geoJSON: any
-) {
+function createGroupingTable(allItems: any, geoJSON: any) {
   // users.forEach((user) => {
   //   if (
   //     contains(
@@ -246,19 +263,45 @@ function createGroupingTable(
   //   }
   // })
 
-  chargers.forEach((charger: any) => {
+  groupingTable = {}
+  // initialize table with 0 chargers
+  geoJSON.features.forEach((area: any) => {
+    groupingTable[area.properties.name] = { numCharger: 0 }
+  })
+
+  let min = 100
+  let max = 0
+
+  allItems.chargers.forEach((charger: any) => {
     geoJSON.features.forEach((area: any) => {
       if (contains(area.geometry.coordinates, charger.lat, charger.lng)) {
         if (groupingTable[area.properties.name] !== undefined) {
+          // increment count of number of chargers
           groupingTable[area.properties.name].numCharger += 1
-        } else {
-          groupingTable[area.properties.name] = { numCharger: 1 }
+
+          // update max
+          if (max < groupingTable[area.properties.name].numCharger) {
+            max = groupingTable[area.properties.name].numCharger
+          }
         }
       }
     })
   })
 
+  // update min
+  for (const e in groupingTable as any) {
+    if (min > groupingTable[e].numCharger) {
+      min = groupingTable[e].numCharger
+    }
+  }
+
   console.log(groupingTable)
+  console.log("min: " + min + ", max: " + max)
+
+  groupingTable["minMax"] = {
+    min: min,
+    max: max,
+  }
 }
 
 

@@ -33,6 +33,7 @@ export function Dashboard({ prop = "Dashboard" }: DashboardProps) {
   const [showUsers, setShowUsers] = React.useState(false)
   const [showChargers, setShowChargers] = React.useState(false)
   const [showStations, setShowStations] = React.useState(false)
+  const [showAreas, setShowAreas] = React.useState(true)
 
   return (
     <div className="w-full h-screen bg-black flex flex-col overflow-hidden">
@@ -65,6 +66,12 @@ export function Dashboard({ prop = "Dashboard" }: DashboardProps) {
               users={usersToMapItems(showUsers ? users ?? [] : [])}
               chargers={chargersToMapItems(showChargers ? chargers ?? [] : [])}
               stations={stationsToMapItems(showStations ? stations ?? [] : [])}
+              allItems={{
+                users: users,
+                chargers: chargers,
+                stations: stations,
+              }}
+              showAreas={showAreas}
             />
           </DashboardBox>
         </div>
