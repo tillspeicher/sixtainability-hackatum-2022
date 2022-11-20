@@ -2,6 +2,7 @@ import mapboxgl, { Map } from "mapbox-gl"
 import { useEffect, useRef, useState, RefObject } from "react"
 
 import polygon from "~/constants/polygons.json"
+
 import { MapItem } from "~/controllers/definitions"
 
 import type { MapProps } from "./types"
@@ -111,38 +112,6 @@ export function MapBox({ prop = "Map", users, chargers, stations }: MapProps) {
     })
   }
 
-  function createGroupingTable() {
-    // users.forEach((user) => {
-    //   if (
-    //     contains(
-    //       polygon[e.features[0].properties.name],
-    //       user.lngLat.lat,
-    //       user.lngLat.lng
-    //     ) === 0
-    //   ) {
-
-    //   }
-    // })
-
-    chargers.forEach((charger) => {
-      geoJSON.features.forEach((area: any) => {
-        if (
-          contains(
-            polygon[area.geaometry.coordinates],
-            charger.lat,
-            charger.lng
-          )
-        ) {
-          if (groupingTable[area.properties.name]) {
-            groupingTable[area.properties.name].numCharger += 1
-          } else {
-            groupingTable[area.properties.name]["numCharger"] += 1
-          }
-        }
-      })
-    })
-  }
-
   useEffect(() => {
     if (map.current) return // initialize map only once
     map.current = new mapboxgl.Map({
@@ -238,4 +207,37 @@ function useMarkers(map: RefObject<mapboxgl.Map>, items: MapItem[]) {
     })
     setMarkers(newMarkers)
   }, [items])
+}
+
+function createGroupingTable(
+  chargers: any,
+  users: any,
+  stations: any,
+  geoJSON: any
+) {
+  // users.forEach((user) => {
+  //   if (
+  //     contains(
+  //       polygon[e.features[0].properties.name],
+  //       user.lngLat.lat,
+  //       user.lngLat.lng
+  //     ) === 0
+  //   ) {
+
+  //   }
+  // })
+
+  chargers.forEach((charger: any) => {
+    geoJSON.features.forEach((area: any) => {
+      if (contains(area.geometry.coordinates, charger.lat, charger.lng)) {
+        if (groupingTable[area.properties.name] !== undefined) {
+          groupingTable[area.properties.name].numCharger += 1
+        } else {
+          groupingTable[area.properties.name] = { numCharger: 1 }
+        }
+      }
+    })
+  })
+
+  console.log(groupingTable)
 }

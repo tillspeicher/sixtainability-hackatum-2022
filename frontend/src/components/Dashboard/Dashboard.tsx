@@ -4,8 +4,9 @@ import React, { ReactNode } from "react"
 import { DashboardBox } from "../DashboardBox"
 import { Map } from "../Map"
 import type { DashboardProps } from "./types"
-import {Footer} from "~/components/Footer";
-import sixtainabilityLogo from "~/assets/sixtainability.png"
+import {Footer} from "~/components/Footer"
+import { ItemIcon } from "~/components/ItemIcon"
+import { ItemType } from "~/controllers/definitions"
 
 import {
   chargersToListItems,
@@ -38,26 +39,28 @@ export function Dashboard({ prop = "Dashboard" }: DashboardProps) {
       <div className="flex w-full h-full pt-2 content-center justify-center flex-row">
         <div className="h-full w-3/12 px-1.5">
           <DashboardBox title={"Controls"}>
-            <SwitchControl title="Areas" valueId="areas" onChange={() => {}} />
+            <SwitchControl
+              title="Areas"
+              switchType="area" onChange={() => {}} />
             <SwitchControl
               title="Users"
-              valueId="users"
+              switchType="user"
               onChange={setShowUsers}
             />
             <SwitchControl
               title="Chargers"
-              valueId="charger"
+              switchType="charger"
               onChange={setShowChargers}
             />
             <SwitchControl
               title="Stations"
-              valueId="stations"
+              switchType="station"
               onChange={setShowStations}
             />
           </DashboardBox>
         </div>
         <div className="h-full w-6/12 px-1.5">
-          <DashboardBox title={"Map"}>
+          <DashboardBox>
             <Map
               users={usersToMapItems(showUsers ? users ?? [] : [])}
               chargers={chargersToMapItems(showChargers ? chargers ?? [] : [])}
@@ -67,10 +70,14 @@ export function Dashboard({ prop = "Dashboard" }: DashboardProps) {
         </div>
         <div className="h-full w-3/12 px-1.5">
           <DashboardBox title={"Info"}>
-            {users &&
-              usersToListItems(users).map((user) => (
-                <InfoItem key={user.id} {...user} />
-              ))}
+              <div className="w-full h-full overflow-y-auto">
+                <div className="w-full">
+                    {users &&
+                    usersToListItems(users).map((user) => (
+                        <InfoItem key={user.id} {...user} />
+                    ))}
+                </div>
+            </div>
           </DashboardBox>
         </div>
       </div>
@@ -81,21 +88,22 @@ export function Dashboard({ prop = "Dashboard" }: DashboardProps) {
 
 type SwitchControlProps = {
   title: string
-  valueId: string
   onChange: (activated: boolean) => void
+    switchType: ItemType
 }
 
 const SwitchControl: React.FC<SwitchControlProps> = (props) => {
   return (
     <ListEntry>
-      <p className="text-white text-xl w-20 h-full text-bottom">
-        {props.title}
-      </p>
-      <Switch
-        aria-label={props.valueId}
-        onChange={(e) => {
-          props.onChange(e.target.checked)
-        }}
+        <ItemIcon itemType={props.switchType} />
+        <p className="text-white text-xl w-20 h-full text-bottom">
+            {props.title}
+        </p>
+        <Switch
+            aria-label={props.switchType}
+            onChange={(e) => {
+            props.onChange(e.target.checked)
+            }}
       />
     </ListEntry>
   )
